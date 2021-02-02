@@ -18,12 +18,12 @@ public class DeviceReaderTest {
             String line = null;
             while ((line = in.readLine()) != null) {
                 if (NMEAUtils.checkSumTest(line)) {
-                    System.out.println("Parsed sentence: " + line);
+                    // System.out.println("Parsed sentence: " + line);
                     GPSInformation info = nmeaParser.parse(line);
-//                    if ( "GPGGA".equals(info.getSentenceType())) {
-//                        System.out.println("Parsed sentence: " + line);
-//                        System.out.println("**** " + info.toString());
-//                    }
+                    if ( "GPRMC".equals(info.getSentenceType())) {
+                        System.out.println("Parsed sentence: " + line);
+                        System.out.println("**** " + info.toString());
+                    }
                 } else {
                     System.out.println("Checksum test failed for sentence: " + line);
                 }
