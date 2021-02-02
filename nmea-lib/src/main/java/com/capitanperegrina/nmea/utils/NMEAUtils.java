@@ -1,5 +1,7 @@
 package com.capitanperegrina.nmea.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class NMEAUtils {
 
     private NMEAUtils() {
@@ -24,6 +26,17 @@ public class NMEAUtils {
         return med;
     }
 
+    public static String cleanNMEAMessage(String nmeaMessage) {
+        String cleanNmeaMessage = nmeaMessage;
+        if ( nmeaMessage.startsWith("$")) {
+            cleanNmeaMessage = nmeaMessage.substring(1);
+        }
+        if ( nmeaMessage.contains("*")) {
+            cleanNmeaMessage = cleanNmeaMessage.substring(0,cleanNmeaMessage.indexOf("*"));
+        }
+        return cleanNmeaMessage;
+    }
+
     public static Boolean checkSumTest(String nmeaMessage) {
         String nmeaChecksum = null;
         if ( nmeaMessage.contains("*")) {
@@ -37,18 +50,28 @@ public class NMEAUtils {
     }
 
     public static String checkSumCalculate(String nmeaMessage) {
-        String cleanNmeaMessage = nmeaMessage;
-        if ( nmeaMessage.startsWith("$")) {
-            cleanNmeaMessage = nmeaMessage.substring(1);
-        }
-        if ( nmeaMessage.contains("*")) {
-            cleanNmeaMessage = cleanNmeaMessage.substring(0,cleanNmeaMessage.indexOf("*"));
-        }
+        String cleanNmeaMessage = cleanNMEAMessage(nmeaMessage);
 
         char checksum = 0;
         for ( char c : cleanNmeaMessage.toCharArray() ) {
             checksum = (char) (checksum ^ c);
         }
         return String.format("%02x", (int) checksum);
+    }
+
+    public static Float readFloat(String token) {
+        try {
+            return Float.parseFloat(token);
+        } catch ( NumberFormatException e ) {
+            return null;
+        }
+    }
+
+    public static Integer readInteger(String token) {
+        try {
+            return Integer.parseInt(token);
+        } catch ( NumberFormatException e ) {
+            return null;
+        }
     }
 }

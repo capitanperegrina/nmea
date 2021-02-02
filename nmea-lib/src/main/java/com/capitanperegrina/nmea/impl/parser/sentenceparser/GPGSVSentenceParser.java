@@ -1,10 +1,11 @@
-package com.capitanperegrina.nmea.parser.sentenceparser.impl;
+package com.capitanperegrina.nmea.impl.parser.sentenceparser;
 
+import com.capitanperegrina.nmea.utils.NMEAUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.capitanperegrina.nmea.model.GPSInformation;
-import com.capitanperegrina.nmea.model.GPSSatellite;
-import com.capitanperegrina.nmea.parser.sentenceparser.NMEASentenceParser;
+import com.capitanperegrina.nmea.api.model.beans.GPSInformation;
+import com.capitanperegrina.nmea.api.model.beans.GPSSatellite;
+import com.capitanperegrina.nmea.api.parser.sentenceparser.NMEASentenceParser;
 
 /**
  * $GPGSV - GPS Satellites in view
@@ -54,14 +55,37 @@ public class GPGSVSentenceParser implements NMEASentenceParser {
 
     private GPSSatellite parseFromIndex(final String[] tokens, final int index) {
         GPSSatellite sat = new GPSSatellite();
-        sat.setTotalMessages(Integer.parseInt(tokens[1]));
-        sat.setNumber(Integer.parseInt(tokens[2]));
-        sat.setSvInViewNumber(Integer.parseInt(tokens[3]));
+        sat.setTotalMessages(NMEAUtils.readInteger(tokens[1]));
+        sat.setNumber(NMEAUtils.readInteger(tokens[2]));
+        sat.setSvInViewNumber(NMEAUtils.readInteger(tokens[3]));
 
-        sat.setSvPrnNumber(Integer.parseInt(tokens[index]));
-        sat.setElevation(Integer.parseInt(tokens[index+1]));
-        sat.setAzimuth(Integer.parseInt(tokens[index+2]));
-        sat.setSnr(Integer.parseInt(tokens[index+3]));
+        int i = index;
+        if ( tokens.length > i ) {
+            sat.setSvPrnNumber(NMEAUtils.readInteger(tokens[i]));
+        } else {
+            sat.setSvPrnNumber(null);
+        }
+        i++;
+
+        if ( tokens.length > i ) {
+            sat.setElevation(NMEAUtils.readInteger(tokens[i]));
+        } else {
+            sat.setElevation(null);
+        }
+        i++;
+
+        if ( tokens.length > i ) {
+            sat.setAzimuth(NMEAUtils.readInteger(tokens[i]));
+        } else {
+            sat.setAzimuth(null);
+        }
+        i++;
+
+        if ( tokens.length > i ) {
+            sat.setSnr(NMEAUtils.readInteger(tokens[i]));
+        } else {
+            sat.setSnr(null);
+        }
         return sat;
     }
 }

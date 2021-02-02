@@ -1,7 +1,7 @@
-package com.capitanperegrina.nmea.parser.sentenceparser.impl;
+package com.capitanperegrina.nmea.impl.parser.sentenceparser;
 
-import com.capitanperegrina.nmea.model.GPSInformation;
-import com.capitanperegrina.nmea.parser.sentenceparser.NMEASentenceParser;
+import com.capitanperegrina.nmea.api.model.beans.GPSInformation;
+import com.capitanperegrina.nmea.api.parser.sentenceparser.NMEASentenceParser;
 import com.capitanperegrina.nmea.utils.NMEAUtils;
 
 /**

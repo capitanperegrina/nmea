@@ -1,4 +1,4 @@
-package com.capitanperegrina.nmea.model;
+package com.capitanperegrina.nmea.api.model.beans;
 
 /**
  *  1    = Total number of messages of this type in this cycle
