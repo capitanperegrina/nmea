@@ -3,10 +3,10 @@ package com.capitanperegrina.nmea.impl.marineapi.tests;
 import java.io.File;
 import java.io.FileInputStream;
 
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GGAListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GSAListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GSVListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.RMCListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.GGAListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.GSAListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.GSVListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.RMCListener;
 import net.sf.marineapi.nmea.io.SentenceReader;
 
 public class MarineApiTest {

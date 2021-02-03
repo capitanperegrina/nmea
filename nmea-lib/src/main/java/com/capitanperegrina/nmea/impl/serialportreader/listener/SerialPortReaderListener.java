@@ -1,24 +1,17 @@
 package com.capitanperegrina.nmea.impl.serialportreader.listener;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GGAListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GLLListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GSAListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.GSVListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.RMCListener;
-import com.capitanperegrina.nmea.api.parser.marineapiparsers.VTGListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.GLLListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.RMCListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.VTGListener;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import net.sf.marineapi.nmea.io.SentenceReader;
-import net.sf.marineapi.nmea.parser.SentenceFactory;
-import net.sf.marineapi.nmea.sentence.GSASentence;
-import net.sf.marineapi.nmea.sentence.Sentence;
 
 public class SerialPortReaderListener implements SerialPortEventListener {
 
