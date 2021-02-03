@@ -17,6 +17,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Marine API -->
+            <dependency>
+                <groupId>net.sf.marineapi</groupId>
+                <artifactId>marineapi</artifactId>
+                <version>0.11.0</version>
+            </dependency>
+
             <!-- Spring  Stuff -->
             <dependency>
                 <groupId>org.springframework</groupId>

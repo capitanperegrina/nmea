@@ -14,6 +14,12 @@
 	<name>NMEA 0183 Library</name>
 	
 	<dependencies>
+		<!-- Marine API -->
+		<dependency>
+			<groupId>net.sf.marineapi</groupId>
+			<artifactId>marineapi</artifactId>
+		</dependency>
+
 		<!-- Spring  Stuff -->
 		<dependency>
 			<groupId>org.springframework</groupId>
