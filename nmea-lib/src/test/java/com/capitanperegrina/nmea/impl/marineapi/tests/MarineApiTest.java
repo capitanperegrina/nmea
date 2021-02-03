@@ -3,6 +3,7 @@ package com.capitanperegrina.nmea.impl.marineapi.tests;
 import java.io.File;
 import java.io.FileInputStream;
 
+import com.capitanperegrina.nmea.impl.marineapi.tests.listeners.RMCListener;
 import net.sf.marineapi.nmea.io.SentenceReader;
 
 public class MarineApiTest {

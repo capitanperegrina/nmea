@@ -1,4 +1,4 @@
-package com.capitanperegrina.nmea.impl.marineapi.tests;
+package com.capitanperegrina.nmea.impl.marineapi.tests.listeners;
 
 import net.sf.marineapi.nmea.event.AbstractSentenceListener;
 import net.sf.marineapi.nmea.sentence.GGASentence;
