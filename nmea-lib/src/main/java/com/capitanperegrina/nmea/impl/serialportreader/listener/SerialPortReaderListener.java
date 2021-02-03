@@ -1,58 +1,68 @@
 package com.capitanperegrina.nmea.impl.serialportreader.listener;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.capitanperegrina.nmea.api.parser.marineapiparsers.GGAListener;
+import com.capitanperegrina.nmea.api.parser.marineapiparsers.GLLListener;
+import com.capitanperegrina.nmea.api.parser.marineapiparsers.GSAListener;
+import com.capitanperegrina.nmea.api.parser.marineapiparsers.GSVListener;
+import com.capitanperegrina.nmea.api.parser.marineapiparsers.RMCListener;
+import com.capitanperegrina.nmea.api.parser.marineapiparsers.VTGListener;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
+import net.sf.marineapi.nmea.io.SentenceReader;
+import net.sf.marineapi.nmea.parser.SentenceFactory;
+import net.sf.marineapi.nmea.sentence.GSASentence;
+import net.sf.marineapi.nmea.sentence.Sentence;
 
 public class SerialPortReaderListener implements SerialPortEventListener {
 
-    private static byte CR = 13;
-    private static byte LF = 10;
+    private static String CR = "\n";
+    private static String LF = "\r";
 
     private final SerialPort serialPort;
     private final StringBuilder buffer;
+    private final String operation;
 
-    public SerialPortReaderListener(SerialPort serialPort) {
+    public SerialPortReaderListener(SerialPort serialPort, String operation) {
         this.serialPort = serialPort;
         this.buffer = new StringBuilder();
+        this.operation = operation;
     }
 
-    /**
-     * **********************************************
-     * \n: false
-     * \r: false
-     * buffer contains \n: false
-     * buffer contains \r: false
-     * **********************************************
-     * \n: false
-     * \r: false
-     * buffer contains \n: false
-     * buffer contains \r: false
-     * **********************************************
-     * \n: false
-     * \r: true
-     * buffer contains \n: false
-     * buffer contains \r: true
-     * **********************************************
-     * \n: true
-     * \r: false
-     * buffer contains \n: true
-     * buffer contains \r: true
-     * **********************************************
-     */
     public void serialEvent(SerialPortEvent event) {
         if (event.isRXCHAR()) { //If data is available
             try {
                 String caracter = this.serialPort.readString(1);
-                this.buffer.append(caracter);
-                System.out.println("**********************************************");
-                System.out.println("\\n: " + "\n".equals(caracter));
-                System.out.println("\\r: " + "\r".equals(caracter));
-                System.out.println("buffer contains \\n: " + this.buffer.toString().contains("\n"));
-                System.out.println("buffer contains \\r: " + this.buffer.toString().contains("\r"));
-                // System.out.print(caracter);
-                // System.out.print("***" + this.buffer.length() +  "**************************\n" + this.buffer.toString());
+                if ( CR.equals(caracter) || LF.equals(caracter) ) {
+                    if (buffer.length() > 0) {
+                        String nmea = buffer.toString();
+                        if ( operation.equals("LIST")) {
+                            System.out.println(nmea);
+                        } else if ( operation.equals("PARSE")) {
+                            try (InputStream targetStream = new ByteArrayInputStream(nmea.getBytes()) ) {
+                                SentenceReader reader = new SentenceReader(targetStream);
+                                // reader.addSentenceListener(new GGAListener()); // GPGGA
+                                // reader.addSentenceListener(new GSAListener()); // GPGSA
+                                // reader.addSentenceListener(new GSVListener()); // GPGSV
+                                reader.addSentenceListener(new RMCListener()); // GPRMC
+                                reader.addSentenceListener(new GLLListener()); // GPGLL
+                                reader.addSentenceListener(new VTGListener()); // GPVTG
+                                reader.start();
+                            } catch ( IOException e ) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    buffer.setLength(0);
+                } else {
+                    this.buffer.append(caracter);
+                }
             } catch (SerialPortException ex) {
                 ex.printStackTrace();
             }

@@ -1,4 +1,4 @@
-package com.capitanperegrina.nmea.impl.marineapi.tests.listeners;
+package com.capitanperegrina.nmea.api.parser.marineapiparsers;
 
 import net.sf.marineapi.nmea.event.AbstractSentenceListener;
 import net.sf.marineapi.nmea.sentence.RMCSentence;
@@ -8,9 +8,7 @@ import net.sf.marineapi.nmea.util.Time;
 
 public class RMCListener extends AbstractSentenceListener<RMCSentence> {
     public void sentenceRead(RMCSentence rmc) {
-        Date date = rmc.getDate();
-        Time time = rmc.getTime();
         Position pos = rmc.getPosition();
-        System.out.println(date.toISO8601() + " - " + time.toISO8601() + " - " + pos.toString());
+        System.out.println("[" + rmc.getTime().toISO8601() + "] " + pos.getDatum().toString() + " - " + pos.toString());
     }
 }

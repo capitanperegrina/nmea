@@ -1,7 +1,5 @@
 package com.capitanperegrina.nmea.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class NMEAUtils {
 
     private NMEAUtils() {

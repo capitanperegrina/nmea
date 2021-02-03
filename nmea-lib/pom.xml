@@ -37,6 +37,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+
+		<!-- Paramaters -->
+		<dependency>
+			<groupId>com.martiansoftware</groupId>
+			<artifactId>jsap</artifactId>
+		</dependency>
     </dependencies>
 	 
 	<build>
@@ -50,21 +56,22 @@
 					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
+					<finalName>PeregrinaNMEA-${project.version}</finalName>
 					<archive>
 						<manifest>
-							<mainClass>com.capitanperegrina.nmea.examples.DevReader</mainClass>
+							<mainClass>com.capitanperegrina.nmea.bin.PeregrinaNMEA</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 
