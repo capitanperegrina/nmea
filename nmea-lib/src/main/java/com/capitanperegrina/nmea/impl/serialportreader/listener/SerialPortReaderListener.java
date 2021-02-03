@@ -1,31 +1,26 @@
 package com.capitanperegrina.nmea.impl.serialportreader.listener;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.GLLListener;
-import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.RMCListener;
-import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.VTGListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.PeregrinaNMEAPendingSentences;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-import net.sf.marineapi.nmea.io.SentenceReader;
 
 public class SerialPortReaderListener implements SerialPortEventListener {
 
     private static String CR = "\n";
     private static String LF = "\r";
 
+    private final PeregrinaNMEAPendingSentences pendingSentences;
     private final SerialPort serialPort;
     private final StringBuilder buffer;
     private final String operation;
 
-    public SerialPortReaderListener(SerialPort serialPort, String operation) {
+    public SerialPortReaderListener(SerialPort serialPort, String operation, PeregrinaNMEAPendingSentences pendingSentences) {
         this.serialPort = serialPort;
         this.buffer = new StringBuilder();
         this.operation = operation;
+        this.pendingSentences = pendingSentences;
     }
 
     public void serialEvent(SerialPortEvent event) {
@@ -38,18 +33,7 @@ public class SerialPortReaderListener implements SerialPortEventListener {
                         if ( operation.equals("LIST")) {
                             System.out.println(nmea);
                         } else if ( operation.equals("PARSE")) {
-                            try (InputStream targetStream = new ByteArrayInputStream(nmea.getBytes()) ) {
-                                SentenceReader reader = new SentenceReader(targetStream);
-                                // reader.addSentenceListener(new GGAListener()); // GPGGA
-                                // reader.addSentenceListener(new GSAListener()); // GPGSA
-                                // reader.addSentenceListener(new GSVListener()); // GPGSV
-                                reader.addSentenceListener(new RMCListener()); // GPRMC
-                                reader.addSentenceListener(new GLLListener()); // GPGLL
-                                reader.addSentenceListener(new VTGListener()); // GPVTG
-                                reader.start();
-                            } catch ( IOException e ) {
-                                e.printStackTrace();
-                            }
+                            this.pendingSentences.addNmeaSentence(nmea);
                         }
                     }
                     buffer.setLength(0);
