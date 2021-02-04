@@ -27,6 +27,6 @@ public class PeregrinaNMEA {
         }
         System.out.println("Stopping...");
         spr.stop();
-        System.out.println("\nStopped     ");
+        System.out.println("\rStopped     ");
     }
 }
