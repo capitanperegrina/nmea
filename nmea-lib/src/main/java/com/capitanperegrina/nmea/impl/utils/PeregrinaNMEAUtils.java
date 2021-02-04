@@ -57,12 +57,20 @@ public class PeregrinaNMEAUtils {
                     .setShortFlag('o')
                     .setLongFlag("operation");
 
+            FlaggedOption optSeconds = new FlaggedOption("Run time in seconds")
+                    .setStringParser(JSAP.INTEGER_PARSER)
+                    .setRequired(false)
+                    .setDefault("10")
+                    .setShortFlag('t')
+                    .setLongFlag("time");
+
             jsap.registerParameter(optSerialPortName);
             jsap.registerParameter(optBaudRate);
             jsap.registerParameter(optDataBits);
             jsap.registerParameter(optStopBits);
             jsap.registerParameter(optParity);
             jsap.registerParameter(optOperation);
+            jsap.registerParameter(optSeconds);
 
             JSAPResult config = jsap.parse(args);
 
@@ -81,7 +89,8 @@ public class PeregrinaNMEAUtils {
                     config.getInt(optDataBits.getID()),
                     config.getInt(optStopBits.getID()),
                     config.getInt(optParity.getID()),
-                    config.getString(optOperation.getID()));
+                    config.getString(optOperation.getID()),
+                    config.getInt(optSeconds.getID()));
         } catch (JSAPException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

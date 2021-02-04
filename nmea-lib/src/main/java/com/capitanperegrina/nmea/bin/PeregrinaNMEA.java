@@ -16,17 +16,16 @@ public class PeregrinaNMEA {
 
         SerialPortReader spr =  new SerialPortReader(params, pendingSentences);
 
-        int seconds = 60;
-        System.out.print("Starting... ");
+        System.out.println("Starting...");
         spr.start();
-        System.out.println("\rStarted for " + seconds + " seconds.");
+        System.out.println("Started for " + params.getSeconds() + " seconds.");
         try {
-            Thread.sleep(seconds*1000);
+            Thread.sleep(params.getSeconds()*1000);
         } catch ( InterruptedException e ) {
             System.out.println(e.getMessage());
         }
         System.out.println("Stopping...");
         spr.stop();
-        System.out.println("\rStopped     ");
+        System.out.println("Stopped");
     }
 }
