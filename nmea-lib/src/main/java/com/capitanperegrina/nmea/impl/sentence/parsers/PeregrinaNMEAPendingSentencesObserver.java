@@ -1,8 +1,6 @@
 package com.capitanperegrina.nmea.impl.sentence.parsers;
 
-import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.GLLListener;
-import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.RMCListener;
-import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.VTGListener;
+import com.capitanperegrina.nmea.impl.sentence.parsers.listeners.*;
 import net.sf.marineapi.nmea.io.SentenceReader;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,9 +20,9 @@ public class PeregrinaNMEAPendingSentencesObserver implements Observer {
             if (StringUtils.isNotEmpty(nmea)) {
                 try (InputStream targetStream = new ByteArrayInputStream(nmea.getBytes()) ) {
                     SentenceReader reader = new SentenceReader(targetStream);
-                    // reader.addSentenceListener(new GGAListener()); // GPGGA
-                    // reader.addSentenceListener(new GSAListener()); // GPGSA
-                    // reader.addSentenceListener(new GSVListener()); // GPGSV
+                    reader.addSentenceListener(new GGAListener()); // GPGGA
+                    reader.addSentenceListener(new GSAListener()); // GPGSA
+                    reader.addSentenceListener(new GSVListener()); // GPGSV
                     reader.addSentenceListener(new RMCListener()); // GPRMC
                     reader.addSentenceListener(new GLLListener()); // GPGLL
                     reader.addSentenceListener(new VTGListener()); // GPVTG
