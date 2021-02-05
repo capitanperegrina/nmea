@@ -24,6 +24,13 @@
                 <version>0.11.0</version>
             </dependency>
 
+            <!-- ePaper Driver -->
+            <dependency>
+                <groupId>schmid.tk.epaper</groupId>
+                <artifactId>epaperdriver</artifactId>
+                <version>1.0.4-SNAPSHOT</version>
+            </dependency>
+
             <!-- Serial Port -->
             <dependency>
                 <groupId>org.scream3r</groupId>

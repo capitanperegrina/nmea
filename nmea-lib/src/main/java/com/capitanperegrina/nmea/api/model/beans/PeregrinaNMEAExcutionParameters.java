@@ -7,11 +7,17 @@ public class PeregrinaNMEAExcutionParameters {
     private final Integer dataBits;
     private final Integer stopBits;
     private final Integer parity;
+
     private final String operation;
     private final Integer seconds;
 
+    private final String screenSerialPortName;
+    private final Integer screenWidth;
+    private final Integer screenHeight;
+
     public PeregrinaNMEAExcutionParameters(String serialPortName, Integer baudRate, Integer dataBits,
-            Integer stopBits, Integer parity, String operation, Integer seconds) {
+            Integer stopBits, Integer parity, String operation, Integer seconds, String screenSerialPortName,
+            Integer screenWidth, Integer screenHeight) {
         this.serialPortName = serialPortName;
         this.baudRate = baudRate;
         this.dataBits = dataBits;
@@ -19,6 +25,9 @@ public class PeregrinaNMEAExcutionParameters {
         this.parity = parity;
         this.operation = operation;
         this.seconds = seconds;
+        this.screenSerialPortName = screenSerialPortName;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     public String getSerialPortName() {
@@ -49,6 +58,18 @@ public class PeregrinaNMEAExcutionParameters {
         return seconds;
     }
 
+    public String getScreenSerialPortName() {
+        return screenSerialPortName;
+    }
+
+    public Integer getScreenWidth() {
+        return screenWidth;
+    }
+
+    public Integer getScreenHeight() {
+        return screenHeight;
+    }
+
     @Override
     public String toString() {
         return "PeregrinaNMEAExcutionParameters{" +
@@ -59,6 +80,9 @@ public class PeregrinaNMEAExcutionParameters {
                 ", parity=" + parity +
                 ", operation='" + operation + '\'' +
                 ", seconds=" + seconds +
+                ", screenSerialPortName='" + screenSerialPortName + '\'' +
+                ", screenWidth=" + screenWidth +
+                ", screenHeight=" + screenHeight +
                 '}';
     }
 }

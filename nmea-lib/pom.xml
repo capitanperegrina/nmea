@@ -20,6 +20,12 @@
 			<artifactId>marineapi</artifactId>
 		</dependency>
 
+		<!-- ePaper Driver -->
+		<dependency>
+			<groupId>schmid.tk.epaper</groupId>
+			<artifactId>epaperdriver</artifactId>
+		</dependency>
+
 		<!-- Serial Port -->
 		<dependency>
 			<groupId>org.scream3r</groupId>

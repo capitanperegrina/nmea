@@ -1,6 +1,7 @@
 package com.capitanperegrina.nmea.bin;
 
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
+import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.capitanperegrina.nmea.impl.sentence.parsers.PeregrinaNMEAPendingSentences;
 import com.capitanperegrina.nmea.impl.sentence.parsers.PeregrinaNMEAPendingSentencesObserver;
 import com.capitanperegrina.nmea.impl.serialportreader.SerialPortReader;
@@ -10,6 +11,9 @@ public class PeregrinaNMEA {
 
     public static void main(String[] args) {
         PeregrinaNMEAExcutionParameters params = PeregrinaNMEAUtils.parseParameters(args);
+
+        // Configuring ePaperScreen
+        PeregrinaNMEADisplay.getInstance().configure(params);
 
         PeregrinaNMEAPendingSentences pendingSentences = new PeregrinaNMEAPendingSentences();
         PeregrinaNMEAPendingSentences.getObservable().addObserver(new PeregrinaNMEAPendingSentencesObserver());

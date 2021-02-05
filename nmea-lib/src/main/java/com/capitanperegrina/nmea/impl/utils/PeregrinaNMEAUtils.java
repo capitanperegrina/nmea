@@ -17,11 +17,23 @@ public class PeregrinaNMEAUtils {
         try {
             JSAP jsap = new JSAP();
 
-            FlaggedOption optSerialPortName = new FlaggedOption("Serial port name. eg: /dev/gps0")
+            FlaggedOption optGPSSerialPortName = new FlaggedOption("Serial port name. eg: /dev/gps0 os COM4")
                     .setStringParser(JSAP.STRING_PARSER)
                     .setRequired(true)
                     .setShortFlag('i')
                     .setLongFlag("input");
+
+            FlaggedOption optScreenSerialPortName = new FlaggedOption("ePaper screen serial port name. eg: /dev/ePaper os COM3")
+                    .setStringParser(JSAP.STRING_PARSER)
+                    .setRequired(true)
+                    .setShortFlag('s')
+                    .setLongFlag("screen");
+
+            FlaggedOption optOperation = new FlaggedOption("Operation: LIST, PARSE")
+                    .setStringParser(JSAP.STRING_PARSER)
+                    .setRequired(true)
+                    .setShortFlag('o')
+                    .setLongFlag("operation");
 
             FlaggedOption optBaudRate = new FlaggedOption("Serial port baud rate. eg 4800")
                     .setStringParser(JSAP.INTEGER_PARSER)
@@ -51,12 +63,6 @@ public class PeregrinaNMEAUtils {
                     .setShortFlag('p')
                     .setLongFlag("parity");
 
-            FlaggedOption optOperation = new FlaggedOption("Operation: LIST, PARSE")
-                    .setStringParser(JSAP.STRING_PARSER)
-                    .setRequired(true)
-                    .setShortFlag('o')
-                    .setLongFlag("operation");
-
             FlaggedOption optSeconds = new FlaggedOption("Run time in seconds")
                     .setStringParser(JSAP.INTEGER_PARSER)
                     .setRequired(false)
@@ -64,13 +70,30 @@ public class PeregrinaNMEAUtils {
                     .setShortFlag('t')
                     .setLongFlag("time");
 
-            jsap.registerParameter(optSerialPortName);
+            FlaggedOption optScreenWidth = new FlaggedOption("Screen width in pixels")
+                    .setStringParser(JSAP.INTEGER_PARSER)
+                    .setRequired(false)
+                    .setDefault("800")
+                    .setShortFlag('w')
+                    .setLongFlag("screenWidth");
+
+            FlaggedOption optScreenHeight = new FlaggedOption("Screen height in pixels")
+                    .setStringParser(JSAP.INTEGER_PARSER)
+                    .setRequired(false)
+                    .setDefault("600")
+                    .setShortFlag('h')
+                    .setLongFlag("screenHeight");
+
+            jsap.registerParameter(optGPSSerialPortName);
+            jsap.registerParameter(optScreenSerialPortName);
+            jsap.registerParameter(optOperation);
             jsap.registerParameter(optBaudRate);
             jsap.registerParameter(optDataBits);
             jsap.registerParameter(optStopBits);
             jsap.registerParameter(optParity);
-            jsap.registerParameter(optOperation);
             jsap.registerParameter(optSeconds);
+            jsap.registerParameter(optScreenWidth);
+            jsap.registerParameter(optScreenHeight);
 
             JSAPResult config = jsap.parse(args);
 
@@ -84,13 +107,16 @@ public class PeregrinaNMEAUtils {
             }
 
             return new PeregrinaNMEAExcutionParameters(
-                    config.getString(optSerialPortName.getID()),
+                    config.getString(optGPSSerialPortName.getID()),
                     config.getInt(optBaudRate.getID()),
                     config.getInt(optDataBits.getID()),
                     config.getInt(optStopBits.getID()),
                     config.getInt(optParity.getID()),
                     config.getString(optOperation.getID()),
-                    config.getInt(optSeconds.getID()));
+                    config.getInt(optSeconds.getID()),
+                    config.getString(optScreenSerialPortName.getID()),
+                    config.getInt(optScreenWidth.getID()),
+                    config.getInt(optScreenHeight.getID()));
         } catch (JSAPException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
