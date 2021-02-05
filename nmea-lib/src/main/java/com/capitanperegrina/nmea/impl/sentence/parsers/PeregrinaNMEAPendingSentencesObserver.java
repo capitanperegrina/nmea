@@ -20,12 +20,12 @@ public class PeregrinaNMEAPendingSentencesObserver implements Observer {
             if (StringUtils.isNotEmpty(nmea)) {
                 try (InputStream targetStream = new ByteArrayInputStream(nmea.getBytes()) ) {
                     SentenceReader reader = new SentenceReader(targetStream);
-                    reader.addSentenceListener(new GGAListener()); // GPGGA
-                    reader.addSentenceListener(new GSAListener()); // GPGSA
-                    reader.addSentenceListener(new GSVListener()); // GPGSV
+                    // reader.addSentenceListener(new GGAListener()); // GPGGA
+                    // reader.addSentenceListener(new GSAListener()); // GPGSA
+                    // reader.addSentenceListener(new GSVListener()); // GPGSV
                     reader.addSentenceListener(new RMCListener()); // GPRMC
-                    reader.addSentenceListener(new GLLListener()); // GPGLL
-                    reader.addSentenceListener(new VTGListener()); // GPVTG
+                    // reader.addSentenceListener(new GLLListener()); // GPGLL
+                    // reader.addSentenceListener(new VTGListener()); // GPVTG
                     reader.start();
                 } catch ( IOException e ) {
                     e.printStackTrace();
