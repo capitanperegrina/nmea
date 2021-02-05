@@ -1,20 +1,18 @@
 package com.capitanperegrina.nmea.impl.epaper;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
-import tk.schmid.epaper.display.protocol.DisplayFontSize;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentNumber.SegmentDrawingHelper;
 import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
+
+import java.text.DecimalFormat;
 
 public class PeregrinaNMEADisplay {
 
     private static volatile PeregrinaNMEADisplay singleton;
+    private static final int CHARS_IN_DISPLAY = 3;
 
-    private SerialEPaperDisplay screen;
-    private Integer screenWidth;
-    private Integer screenHeight;
+    private SegmentDrawingHelper drawingHelper;
 
-    //private constructor.
     private PeregrinaNMEADisplay(){
         if (singleton != null){
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
@@ -31,62 +29,44 @@ public class PeregrinaNMEADisplay {
     }
 
     public void configure(PeregrinaNMEAExcutionParameters params) {
-        this.screen = new SerialEPaperDisplay(params.getScreenSerialPortName());
-        this.screenHeight = params.getScreenHeight();
-        this.screenWidth = params.getScreenWidth();
-        this.screen.connect();
-        System.out.println("Connected...");
-        System.out.println("Active storage: " + screen.getActiveStorage());
-        System.out.println("Display Direction: " + screen.getDisplayDirection());
-        System.out.println("English Font Size: " + screen.getEnglishFontSize());
-        System.out.println("Chinese Font Size " + screen.getChineseFontSize());
-        System.out.println("Drawing Color: " + screen.getDrawingColor());
-        System.out.println("Background Color: " + screen.getBackgroundColor());
-        System.out.println("Baud Rate: " + screen.getBaudRate());
+        if (singleton == null) {
+            synchronized (PeregrinaNMEADisplay.class) {
+                this.drawingHelper = new SegmentDrawingHelper(
+                        new SerialEPaperDisplay(params.getScreenSerialPortName()),
+                        params.getScreenHeight()/(CHARS_IN_DISPLAY),
+                        params.getScreenWidth()/(CHARS_IN_DISPLAY+1));
+                this.drawingHelper.getScreen().connect();
+                System.out.println("Connected...");
+                System.out.println("Active storage: " + this.drawingHelper.getScreen().getActiveStorage());
+                System.out.println("Display Direction: " + this.drawingHelper.getScreen().getDisplayDirection());
+                System.out.println("English Font Size: " + this.drawingHelper.getScreen().getEnglishFontSize());
+                System.out.println("Chinese Font Size " + this.drawingHelper.getScreen().getChineseFontSize());
+                System.out.println("Drawing Color: " + this.drawingHelper.getScreen().getDrawingColor());
+                System.out.println("Background Color: " + this.drawingHelper.getScreen().getBackgroundColor());
+                System.out.println("Baud Rate: " + this.drawingHelper.getScreen().getBaudRate());
+            }
+        }
     }
 
     public SerialEPaperDisplay getScreen() {
-        return screen;
+        return this.drawingHelper.getScreen();
+    }
+
+    public void draw(Integer xOffset, Integer yOffset, Float floatNumber) {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.format(floatNumber).chars().mapToObj(character -> this.drawingHelper.drawCharacter(xOffset, yOffset, (char) character));
+    }
+
+    public void draw(Integer xOffset, Integer yOffset, Double doubleNumber) {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        df.format(doubleNumber).chars().mapToObj(character -> this.drawingHelper.drawCharacter(xOffset, yOffset, (char) character));
     }
 
     public void clearScreen() {
-        if ( this.screen != null ) {
-            this.screen.clearScreen();
+        if ( this.drawingHelper.getScreen() != null ) {
+            this.drawingHelper.getScreen().clearScreen();
         }
     }
-
-
-
-/*    public void printCentered(String text) {
-        String showText = text;
-        if ( this.screen != null ) {
-            screen.setEnglishFontSize(DisplayFontSize.DotMatrix_64);
-
-            // Reduce text length id necessary
-            int textLenghInPixels = showText.length() * screen.getEnglishFontSize().getDisplayFontSizeConstant();
-            while ( textLenghInPixels > screenWidth ) {
-                showText = StringUtils.chop(showText);
-                textLenghInPixels = showText.length() * screen.getEnglishFontSize().getDisplayFontSizeConstant();
-            }
-
-            screen.getEnglishFontSize().getFontPixelHeight()
-
-            // Calculate how to center text.
-            int margin = ( this.screenWidth - textLenghInPixels ) / 2;
-            screen.displayText(300, 260, text);
-        }
-    }
-
-
-    /*
-
-
-		display.setEnglishFontSize(DisplayFontSize.DotMatrix_32);
-		display.displayText(100, 360, "https://github.com/SchmidChristian/ePaperDriver");
-
-		display.drawCircle(410, 160, 50, true);
-
-		display.repaint();
-
-     */
 }

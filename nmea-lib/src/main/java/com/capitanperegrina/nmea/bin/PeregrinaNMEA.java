@@ -13,7 +13,7 @@ public class PeregrinaNMEA {
         PeregrinaNMEAExcutionParameters params = PeregrinaNMEAUtils.parseParameters(args);
 
         // Configuring ePaperScreen
-        PeregrinaNMEADisplay.getInstance().configure(params);
+        // PeregrinaNMEADisplay.getInstance().configure(params);
 
         PeregrinaNMEAPendingSentences pendingSentences = new PeregrinaNMEAPendingSentences();
         PeregrinaNMEAPendingSentences.getObservable().addObserver(new PeregrinaNMEAPendingSentencesObserver());

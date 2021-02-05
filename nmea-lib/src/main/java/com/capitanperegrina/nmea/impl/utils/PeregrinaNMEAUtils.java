@@ -26,7 +26,7 @@ public class PeregrinaNMEAUtils {
             FlaggedOption optScreenSerialPortName = new FlaggedOption("ePaper screen serial port name. eg: /dev/ePaper os COM3")
                     .setStringParser(JSAP.STRING_PARSER)
                     .setRequired(true)
-                    .setShortFlag('s')
+                    .setShortFlag('x')
                     .setLongFlag("screen");
 
             FlaggedOption optOperation = new FlaggedOption("Operation: LIST, PARSE")
