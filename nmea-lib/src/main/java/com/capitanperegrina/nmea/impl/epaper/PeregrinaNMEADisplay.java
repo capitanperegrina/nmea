@@ -6,6 +6,8 @@ import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
 
 import java.text.DecimalFormat;
 
+import org.javatuples.Pair;
+
 public class PeregrinaNMEADisplay {
 
     private static volatile PeregrinaNMEADisplay singleton;
@@ -52,16 +54,16 @@ public class PeregrinaNMEADisplay {
         return this.drawingHelper.getScreen();
     }
 
-    public void draw(Integer xOffset, Integer yOffset, Float floatNumber) {
+    public void draw(Pair<Integer,Integer> offset, Float floatNumber) {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
-        df.format(floatNumber).chars().mapToObj(character -> this.drawingHelper.drawCharacter(xOffset, yOffset, (char) character));
+        df.format(floatNumber).chars().mapToObj(character -> this.drawingHelper.drawCharacter(offset, (char) character));
     }
 
-    public void draw(Integer xOffset, Integer yOffset, Double doubleNumber) {
+    public void draw(Pair<Integer,Integer> offset, Double doubleNumber) {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
-        df.format(doubleNumber).chars().mapToObj(character -> this.drawingHelper.drawCharacter(xOffset, yOffset, (char) character));
+        df.format(doubleNumber).chars().mapToObj(character -> this.drawingHelper.drawCharacter(offset, (char) character));
     }
 
     public void clearScreen() {

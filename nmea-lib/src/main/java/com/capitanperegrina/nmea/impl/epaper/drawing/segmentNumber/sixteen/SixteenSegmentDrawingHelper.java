@@ -11,7 +11,9 @@ public class SixteenSegmentDrawingHelper extends SegmentDrawingHelper {
     }
 
     @Override
-    public Pair<Integer, Integer> drawCharacter(Pair<Integer, Integer> offset, char character) {
+    public Pair<Integer, Integer> drawCharacter(Pair<Integer, Integer> offset, char character, int scale) {
+
+
         return null;
     }
 }

@@ -15,5 +15,5 @@ public abstract class SegmentDrawingHelper {
         this.characterWidth = characterWidth;
     }
 
-    public abstract Pair<Integer,Integer> drawCharacter(Pair<Integer,Integer> offset, char character);
+    public abstract Pair<Integer,Integer> drawCharacter(Pair<Integer,Integer> offset, char character, int scale);
 }
