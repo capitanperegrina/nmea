@@ -1,7 +1,7 @@
 package com.capitanperegrina.nmea.impl.epaper;
 
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentNumber.SegmentDrawingHelper;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentNumber.seven.SevenSegmentDrawingHelper;
 import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
 
 import java.text.DecimalFormat;
@@ -11,7 +11,7 @@ public class PeregrinaNMEADisplay {
     private static volatile PeregrinaNMEADisplay singleton;
     private static final int CHARS_IN_DISPLAY = 3;
 
-    private SegmentDrawingHelper drawingHelper;
+    private SevenSegmentDrawingHelper drawingHelper;
 
     private PeregrinaNMEADisplay(){
         if (singleton != null){
@@ -31,7 +31,7 @@ public class PeregrinaNMEADisplay {
     public void configure(PeregrinaNMEAExcutionParameters params) {
         if (singleton == null) {
             synchronized (PeregrinaNMEADisplay.class) {
-                this.drawingHelper = new SegmentDrawingHelper(
+                this.drawingHelper = new SevenSegmentDrawingHelper(
                         new SerialEPaperDisplay(params.getScreenSerialPortName()),
                         params.getScreenHeight()/(CHARS_IN_DISPLAY),
                         params.getScreenWidth()/(CHARS_IN_DISPLAY+1));
