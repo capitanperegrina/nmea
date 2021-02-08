@@ -1,20 +1,20 @@
-package com.capitanperegrina.nmea.impl.epaper.drawing.segmentNumber.sixteen;
+package com.capitanperegrina.nmea.impl.marineapi.tests.segments.sixteen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiCharacterDisplay extends JComponent {
+public class SixteenMultiCharacterDisplay extends JComponent {
     private static final int GAP = 5;
     private int segmentDisplayCount;
     private List<SixteenSegmentDisplay> segmentDisplays;
 
-    public MultiCharacterDisplay(int segmentDisplayCount) {
+    public SixteenMultiCharacterDisplay(int segmentDisplayCount) {
         this(segmentDisplayCount, Color.red);
     }
 
-    public MultiCharacterDisplay(int segmentDisplayCount, Color segmentColor) {
+    public SixteenMultiCharacterDisplay(int segmentDisplayCount, Color segmentColor) {
         this.segmentDisplayCount = segmentDisplayCount;
         segmentDisplays = new ArrayList<SixteenSegmentDisplay>(segmentDisplayCount);
         setLayout(new FlowLayout(FlowLayout.LEFT, GAP, 0));
@@ -39,7 +39,7 @@ public class MultiCharacterDisplay extends JComponent {
     public static void main(String[] args) {
         String text = "Hola mundo";
 
-        MultiCharacterDisplay display = new MultiCharacterDisplay(text.length(), Color.GREEN);
+        SixteenMultiCharacterDisplay display = new SixteenMultiCharacterDisplay(text.length(), Color.GREEN);
         display.setText(text);
 
         JFrame frame = new JFrame();

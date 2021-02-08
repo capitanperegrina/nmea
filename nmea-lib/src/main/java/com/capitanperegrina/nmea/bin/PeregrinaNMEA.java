@@ -1,11 +1,15 @@
 package com.capitanperegrina.nmea.bin;
 
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
+// import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.SegmentDrawingHelper;
 import com.capitanperegrina.nmea.impl.sentence.parsers.PeregrinaNMEAPendingSentences;
 import com.capitanperegrina.nmea.impl.sentence.parsers.PeregrinaNMEAPendingSentencesObserver;
 import com.capitanperegrina.nmea.impl.serialportreader.SerialPortReader;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
+import tk.schmid.epaper.display.EPaperDisplay;
+import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
 
 public class PeregrinaNMEA {
 
@@ -13,7 +17,8 @@ public class PeregrinaNMEA {
         PeregrinaNMEAExcutionParameters params = PeregrinaNMEAUtils.parseParameters(args);
 
         // Configuring ePaperScreen
-        // PeregrinaNMEADisplay.getInstance().configure(params);
+        PeregrinaNMEADisplay.getInstance().configure(params);
+
 
         PeregrinaNMEAPendingSentences pendingSentences = new PeregrinaNMEAPendingSentences();
         PeregrinaNMEAPendingSentences.getObservable().addObserver(new PeregrinaNMEAPendingSentencesObserver());
@@ -31,5 +36,7 @@ public class PeregrinaNMEA {
         System.out.println("Stopping...");
         spr.stop();
         System.out.println("Stopped");
+
+        Runtime.getRuntime().halt(0);
     }
 }

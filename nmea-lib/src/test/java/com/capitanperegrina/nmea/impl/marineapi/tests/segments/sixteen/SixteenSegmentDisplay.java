@@ -1,4 +1,6 @@
-package com.capitanperegrina.nmea.impl.epaper.drawing.segmentNumber.sixteen;
+package com.capitanperegrina.nmea.impl.marineapi.tests.segments.sixteen;
+
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.SixteenSegmentAlfabet;
 
 import javax.swing.*;
 import java.awt.*;

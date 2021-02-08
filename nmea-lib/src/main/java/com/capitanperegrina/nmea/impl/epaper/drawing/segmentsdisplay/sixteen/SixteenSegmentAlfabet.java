@@ -1,6 +1,8 @@
-package com.capitanperegrina.nmea.impl.epaper.drawing.segmentNumber.sixteen;
+package com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum SixteenSegmentAlfabet {
@@ -66,7 +68,11 @@ public enum SixteenSegmentAlfabet {
             this.segments = segments;
         }
 
-        public Integer[] getSegments() {
-            return segments;
+        private Integer[] getSegments() {
+                return segments;
+        }
+
+        public static List<Integer> getSegments(char character) {
+                return Arrays.asList(MAP.get(character).getSegments());
         }
     }
