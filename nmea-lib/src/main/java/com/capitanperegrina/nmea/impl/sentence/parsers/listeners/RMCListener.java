@@ -1,5 +1,6 @@
 package com.capitanperegrina.nmea.impl.sentence.parsers.listeners;
 
+import com.capitanperegrina.nmea.api.model.beans.BoatInformarion;
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
 import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import com.capitanperegrina.nmea.impl.core.PeregrinaNMEADataBuffer;
@@ -15,8 +16,8 @@ import org.joda.time.format.ISODateTimeFormat;
 public class RMCListener extends AbstractSentenceListener<RMCSentence> {
     public void sentenceRead(RMCSentence rmc) {
         Position pos = rmc.getPosition();
-        BoatPosition p = new BoatPosition(pos.getLatitude(), pos.getLongitude(), rmc.getDate().toISO8601(rmc.getTime()));
+        DateTimeFormatter jodaTimeParser = ISODateTimeFormat.dateTimeNoMillis();
+        BoatInformarion p = new BoatInformarion(pos.getLatitude(), pos.getLongitude(), jodaTimeParser.parseDateTime(rmc.getDate().toISO8601(rmc.getTime())).toDate());
         PeregrinaNMEADataBuffer.getInstance().addElement(p);
-        // System.out.println(p.toString());
     }
 }

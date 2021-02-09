@@ -4,25 +4,34 @@ import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Date;
+
 public class BoatPosition extends Point {
-    public final String iso8601Date;
+    public final Date date;
 
-    public BoatPosition(String iso8601Date) {
-        this.iso8601Date = iso8601Date;
+    public BoatPosition(Date date) {
+        this.date = date;
     }
 
-    public BoatPosition(Double lat, Double lon, String iso8601Date) {
+    public BoatPosition(Double lat, Double lon, Date date) {
         super(lat, lon);
-        this.iso8601Date = iso8601Date;
+        this.date = date;
     }
 
-    public BoatPosition(Double lat, Double lon, String name, String iso8601Date) {
+    public BoatPosition(Double lat, Double lon, String name, Date date) {
         super(lat, lon, name);
-        this.iso8601Date = iso8601Date;
+        this.date = date;
     }
 
-    public String getIso8601Date() {
-        return iso8601Date;
+    public Date getDate() {
+        return date;
+    }
+
+    public Double diferenceInHours( Date otherDate ) {
+        if ( this.date.compareTo(otherDate) > 0 ) {
+            return new Long(otherDate.getTime() - this.date.getTime()).doubleValue() / 3600000;
+        }
+        return null;
     }
 
     @Override
@@ -35,7 +44,7 @@ public class BoatPosition extends Point {
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(iso8601Date, that.iso8601Date)
+                .append(date, that.date)
                 .isEquals();
     }
 
@@ -43,14 +52,14 @@ public class BoatPosition extends Point {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
-                .append(iso8601Date)
+                .append(date)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
         return "BoatPosition{" +
-                "date=" + iso8601Date +
+                "date=" + date +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", name='" + name + '\'' +

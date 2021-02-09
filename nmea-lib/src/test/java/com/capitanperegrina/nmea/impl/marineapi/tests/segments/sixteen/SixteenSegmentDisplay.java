@@ -59,7 +59,7 @@ public class SixteenSegmentDisplay extends JComponent {
     }
 
     private void setLightedSegments(SixteenSegmentAlfabet character) {
-        if (character != null && character.getSegments() != null)
+        if (character != null)
             this.lightedSegments = Arrays.asList(character.getSegments());
         else
             this.lightedSegments = new ArrayList<Integer>(0);

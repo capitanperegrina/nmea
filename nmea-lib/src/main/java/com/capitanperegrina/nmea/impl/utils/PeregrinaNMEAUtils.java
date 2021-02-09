@@ -1,12 +1,23 @@
 package com.capitanperegrina.nmea.impl.utils;
 
+import com.capitanperegrina.nmea.api.model.beans.BoatInformarion;
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class PeregrinaNMEAUtils {
+
+    private static NumberFormat SPEED_FORMATTER = new DecimalFormat("#0.0");
+    private static NumberFormat COURSE_FORMATTER = new DecimalFormat("000");
+    private static NumberFormat DEFAULT_FORMATTER = new DecimalFormat("#0.000000");
+    private static NumberFormat DEGREES_FORMATTER = new DecimalFormat("#0");
+    private static NumberFormat SECONDS_FORMATTER = new DecimalFormat("#0.000");
 
     private PeregrinaNMEAUtils() {
         // Instance creation not allowed as it's a utils class.
@@ -121,5 +132,85 @@ public class PeregrinaNMEAUtils {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    private static Double integerPart(Double d) {
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(d));
+        Integer intValue = bigDecimal.intValue();
+        return intValue.doubleValue();
+    }
+
+    private static Double decimalPart(Double d) {
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(d));
+        Integer intValue = bigDecimal.intValue();
+        return bigDecimal.subtract(new BigDecimal(intValue)).doubleValue();
+    }
+
+    private static String coordinateFormat(Double d) {
+        StringBuilder ret = new StringBuilder();
+        String sign = "";
+        double integerPart = integerPart(d);
+        double decimalPart = decimalPart(d)*60d;
+        if ( integerPart < 0 || decimalPart < 0 ) {
+            sign = "-";
+        }
+        integerPart = Math.abs(integerPart);
+        decimalPart = Math.abs(decimalPart);
+        ret.append(sign)
+                .append(degreesFormat(integerPart))
+                .append(" ")
+                .append(minutesFormat(decimalPart))
+                .append("'");
+        return ret.toString();
+    }
+
+    private static String speedFormat(Double d) {
+        if ( d != null && d != Double.NaN ) {
+            return SPEED_FORMATTER.format(d);
+        }
+        return "--.-";
+    }
+
+    private static String courseFormat(Double d) {
+        if ( d != null && d != Double.NaN ) {
+            return COURSE_FORMATTER.format(d);
+        }
+        return "---";
+    }
+
+    private static String defaultFormat(Double d) {
+        if ( d != null && d != Double.NaN ) {
+            return DEFAULT_FORMATTER.format(d);
+        }
+        return "-.------";
+    }
+
+    private static String degreesFormat(Double d) {
+        if ( d != null && d != Double.NaN ) {
+            return DEGREES_FORMATTER.format(d);
+        }
+        return "-";
+    }
+
+    private static String minutesFormat(Double d) {
+        if ( d != null && d != Double.NaN) {
+            return SECONDS_FORMATTER.format(d);
+        }
+        return "-.---";
+    }
+
+
+
+    public static String boatInformarionToFormattedString(BoatInformarion bi) {
+        return "BoatInformarion {" +
+                "date=" + bi.getDate() +
+                ", latitude=" + coordinateFormat(bi.getLatitude()) +
+                ", longitude=" + coordinateFormat(bi.getLongitude() ) +
+                ", cog=" + courseFormat(bi.getCog()) +
+                "  sog=" + speedFormat(bi.getSog()) +
+                ", smoothSog=" + speedFormat(bi.getSmoothSog()) +
+                ", milesFromLast=" + defaultFormat(bi.getMilesFromLast()) +
+                ", hoursFromLast=" + defaultFormat(bi.getHoursFromLast()) +
+                '}';
     }
 }

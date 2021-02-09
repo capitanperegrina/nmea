@@ -86,7 +86,7 @@ public class Line extends MapElement implements Serializable {
         if (cog > 360) {
             cog = cog - 360;
         }
-        return cog;
+        return cog != Double.NaN ? cog : 0;
     }
 
     private int getQuadrant() {

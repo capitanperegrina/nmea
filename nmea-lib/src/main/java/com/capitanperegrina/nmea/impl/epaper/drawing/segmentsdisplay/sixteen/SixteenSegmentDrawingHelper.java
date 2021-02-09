@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import tk.schmid.epaper.display.EPaperDisplay;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SixteenSegmentDrawingHelper extends SegmentDrawingHelper {
@@ -18,7 +19,7 @@ public class SixteenSegmentDrawingHelper extends SegmentDrawingHelper {
     }
 
     public Pair<Integer,Integer> drawCharacter(Pair<Integer,Integer> offsetStart, char character, int scale) {
-        List<Integer> segments = SixteenSegmentAlfabet.getSegments(character);
+        List<Integer> segments = Arrays.asList( SixteenSegmentAlfabet.valueOf(""+character).getSegments());
         List<SegmentComponent> characterSegmentComponents = new ArrayList<>();
         for ( Integer idSegment : segments ) {
             characterSegmentComponents.addAll( SixteenSegments.getComponents(SixteenSegment.valueOf(idSegment.toString()) ));

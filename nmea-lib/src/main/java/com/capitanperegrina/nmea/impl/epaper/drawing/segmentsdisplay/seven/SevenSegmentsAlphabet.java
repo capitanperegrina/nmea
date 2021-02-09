@@ -17,7 +17,7 @@ public enum SevenSegmentsAlphabet {
     SEVEN(new char[]{'7'}, 1, 2, 3, 6),
     EIGHT(new char[]{'8'}, 1, 2, 3, 4, 5, 6, 7 ),
     NINE(new char[]{'9'}, 1, 2, 3, 4, 6, 7 ),
-    DEGREE(new char[]{'º'}, 1, 2, 3, 4),
+    DEGREE(new char[]{'*'}, 1, 2, 3, 4),
     MINUTES(new char[]{'\''}, 2),
     SECONDS(new char[]{'"'}, 2, 3),
     MINUS(new char[]{','}, 4),
