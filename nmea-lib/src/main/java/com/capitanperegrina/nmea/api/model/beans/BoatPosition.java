@@ -4,23 +4,25 @@ import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
-
 public class BoatPosition extends Point {
-    public Date date;
+    public final String iso8601Date;
 
-    public BoatPosition(Date date) {
-        this.date = date;
+    public BoatPosition(String iso8601Date) {
+        this.iso8601Date = iso8601Date;
     }
 
-    public BoatPosition(Double lat, Double lon, Date date) {
+    public BoatPosition(Double lat, Double lon, String iso8601Date) {
         super(lat, lon);
-        this.date = date;
+        this.iso8601Date = iso8601Date;
     }
 
-    public BoatPosition(Double lat, Double lon, String name, Date date) {
+    public BoatPosition(Double lat, Double lon, String name, String iso8601Date) {
         super(lat, lon, name);
-        this.date = date;
+        this.iso8601Date = iso8601Date;
+    }
+
+    public String getIso8601Date() {
+        return iso8601Date;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class BoatPosition extends Point {
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(date, that.date)
+                .append(iso8601Date, that.iso8601Date)
                 .isEquals();
     }
 
@@ -41,14 +43,14 @@ public class BoatPosition extends Point {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
-                .append(date)
+                .append(iso8601Date)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
         return "BoatPosition{" +
-                "date=" + date +
+                "date=" + iso8601Date +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", name='" + name + '\'' +

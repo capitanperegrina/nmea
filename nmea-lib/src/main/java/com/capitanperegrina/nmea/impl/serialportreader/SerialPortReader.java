@@ -9,7 +9,7 @@ import jssc.SerialPortException;
 public class SerialPortReader {
 
     private PeregrinaNMEAExcutionParameters params;
-    PeregrinaNMEAPendingSentences pendingSentences;
+    private PeregrinaNMEAPendingSentences pendingSentences;
     private SerialPort serialPort;
 
     public SerialPortReader( PeregrinaNMEAExcutionParameters params, PeregrinaNMEAPendingSentences pendingSentences ) {

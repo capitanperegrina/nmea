@@ -1,7 +1,7 @@
 package com.capitanperegrina.nmea.api.model.beans.mapelements;
 
 import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
-import com.capitanperegrina.nmea.api.model.naming.MapElementType;
+import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.MapElementType;
 
 import java.io.Serializable;
 

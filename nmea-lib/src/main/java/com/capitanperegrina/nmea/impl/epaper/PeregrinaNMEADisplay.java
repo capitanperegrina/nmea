@@ -14,7 +14,6 @@ import org.javatuples.Pair;
 public class PeregrinaNMEADisplay {
 
     private static volatile PeregrinaNMEADisplay singleton;
-    private static final int CHARS_IN_DISPLAY = 3;
 
     private EPaperDisplay ePaperDisplay;
     private SixteenSegmentDrawingHelper sixteenSegmentDrawingHelper;

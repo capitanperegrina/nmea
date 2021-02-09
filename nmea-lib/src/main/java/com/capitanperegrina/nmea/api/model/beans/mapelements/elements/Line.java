@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.capitanperegrina.nmea.api.model.beans.mapelements.MapElement;
 import com.capitanperegrina.nmea.api.model.naming.GeoNaming;
-import com.capitanperegrina.nmea.api.model.naming.MapElementType;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
