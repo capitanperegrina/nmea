@@ -10,14 +10,20 @@ import com.martiansoftware.jsap.JSAPResult;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class PeregrinaNMEAUtils {
 
+    private static NumberFormat DEFAULT_FORMATTER = new DecimalFormat("#0.00000");
+    private static NumberFormat DEFAULT_PARSEABLE_FORMATTER = DecimalFormat.getInstance(Locale.US);
     private static NumberFormat SPEED_FORMATTER = new DecimalFormat("#0.0");
     private static NumberFormat COURSE_FORMATTER = new DecimalFormat("000");
-    private static NumberFormat DEFAULT_FORMATTER = new DecimalFormat("#0.000000");
     private static NumberFormat DEGREES_FORMATTER = new DecimalFormat("#0");
     private static NumberFormat SECONDS_FORMATTER = new DecimalFormat("#0.000");
+
+    static {
+        DEFAULT_PARSEABLE_FORMATTER.setMaximumFractionDigits(5);
+    }
 
     private PeregrinaNMEAUtils() {
         // Instance creation not allowed as it's a utils class.
@@ -134,6 +140,16 @@ public class PeregrinaNMEAUtils {
         }
     }
 
+    public static Double defaultPrecision(Double d) {
+        if (d==null) {
+            return null;
+        }
+        if (d.equals(Double.NaN)) {
+            return Double.NaN;
+        }
+        return Double.parseDouble(DEFAULT_PARSEABLE_FORMATTER.format(d));
+    }
+
     private static Double integerPart(Double d) {
         BigDecimal bigDecimal = new BigDecimal(String.valueOf(d));
         Integer intValue = bigDecimal.intValue();
@@ -165,47 +181,45 @@ public class PeregrinaNMEAUtils {
     }
 
     private static String speedFormat(Double d) {
-        if ( d != null && d != Double.NaN ) {
+        if ( d != null && !d.equals(Double.NaN) ) {
             return SPEED_FORMATTER.format(d);
         }
         return "--.-";
     }
 
     private static String courseFormat(Double d) {
-        if ( d != null && d != Double.NaN ) {
+        if ( d != null && !d.equals(Double.NaN) ) {
             return COURSE_FORMATTER.format(d);
         }
         return "---";
     }
 
     private static String defaultFormat(Double d) {
-        if ( d != null && d != Double.NaN ) {
+        if ( d != null && !d.equals(Double.NaN) ) {
             return DEFAULT_FORMATTER.format(d);
         }
         return "-.------";
     }
 
     private static String degreesFormat(Double d) {
-        if ( d != null && d != Double.NaN ) {
+        if ( d != null && !d.equals(Double.NaN) ) {
             return DEGREES_FORMATTER.format(d);
         }
         return "-";
     }
 
     private static String minutesFormat(Double d) {
-        if ( d != null && d != Double.NaN) {
+        if ( d != null && !d.equals(Double.NaN) ) {
             return SECONDS_FORMATTER.format(d);
         }
         return "-.---";
     }
 
-
-
     public static String boatInformarionToFormattedString(BoatInformarion bi) {
         return "BoatInformarion {" +
                 "date=" + bi.getDate() +
-                ", latitude=" + coordinateFormat(bi.getLatitude()) +
-                ", longitude=" + coordinateFormat(bi.getLongitude() ) +
+                ", latitude=" + defaultFormat(bi.getLatitude()) +
+                ", longitude=" + defaultFormat(bi.getLongitude() ) +
                 ", cog=" + courseFormat(bi.getCog()) +
                 "  sog=" + speedFormat(bi.getSog()) +
                 ", smoothSog=" + speedFormat(bi.getSmoothSog()) +

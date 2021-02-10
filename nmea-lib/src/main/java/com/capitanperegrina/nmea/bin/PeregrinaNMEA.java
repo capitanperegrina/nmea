@@ -11,6 +11,9 @@ import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
 import tk.schmid.epaper.display.EPaperDisplay;
 import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
 
+/**
+ * -i COM3 -x COM9 -o LIST
+ */
 public class PeregrinaNMEA {
 
     public static void main(String[] args) {
