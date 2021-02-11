@@ -34,6 +34,12 @@ public class Point extends MapElement {
         this.type = MapElementType.POINT;
     }
 
+    public boolean isValid() {
+        return this.getLatitude() != null && this.getLatitude() != null &&
+                this.latitude >= -90 && this.latitude <= 90 &&
+                this.longitude >= -180 && this.longitude <= 180;
+    }
+
     @Override
     public Point centralPosition() {
         return this;
@@ -88,7 +94,7 @@ public class Point extends MapElement {
 
         Double distanceInMeters = GeoNaming.EARTH_RADIUS * c * 1000;
 
-        return distanceInMeters;
+        return Math.abs(distanceInMeters);
     }
 
     public Double heading(Point otherPoint) {

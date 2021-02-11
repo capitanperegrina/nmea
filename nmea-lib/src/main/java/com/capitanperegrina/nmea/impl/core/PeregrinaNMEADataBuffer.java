@@ -2,8 +2,8 @@ package com.capitanperegrina.nmea.impl.core;
 
 import java.util.LinkedList;
 
-import com.capitanperegrina.nmea.api.model.beans.BoatInformarion;
-import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Line;
+import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
+import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
 
@@ -12,7 +12,9 @@ public class PeregrinaNMEADataBuffer {
     private static volatile PeregrinaNMEADataBuffer singleton;
     private static Integer DATA_BUFFER_SIZE = 10;
 
-    private final LinkedList<BoatInformarion> boatInformarionList = new LinkedList<>();
+    private final LinkedList<BoatPosition> boatPositionList = new LinkedList<>();
+    private final LinkedList<Double> boatSpeedList = new LinkedList<>();
+    private Point waypoint;
 
     private PeregrinaNMEADataBuffer() {
         if (singleton != null) {
@@ -29,38 +31,65 @@ public class PeregrinaNMEADataBuffer {
         return singleton;
     }
 
-    public void addElement(BoatInformarion boatInformarion) {
-        // Making space if full
-        this.boatInformarionList.add(boatInformarion);
-        if (this.boatInformarionList.size() > DATA_BUFFER_SIZE) {
-            this.boatInformarionList.removeFirst();
-        }
-
-//        // Calculations
-//        if ( this.boatInformarionList.size() > 1 ) {
-//            this.boatInformarionList.get(this.boatInformarionList.size()-1).setMilesFromLast(PeregrinaNMEAUtils.defaultPrecision(this.boatInformarionList.get(this.boatInformarionList.size()-1).distanceInNauticalMiles(this.boatInformarionList.get(this.boatInformarionList.size()-2))));
-//            this.boatInformarionList.get(this.boatInformarionList.size()-1).setHoursFromLast(this.boatInformarionList.get(this.boatInformarionList.size()-1).diferenceInHours(this.boatInformarionList.get(this.boatInformarionList.size()-2).getDate()));
-//            this.boatInformarionList.get(this.boatInformarionList.size()-1).setSog(PeregrinaNMEAUtils.defaultPrecision(this.boatInformarionList.get(this.boatInformarionList.size()-1).getMilesFromLast()/this.boatInformarionList.get(this.boatInformarionList.size()-1).getHoursFromLast()));
-//            this.boatInformarionList.get(this.boatInformarionList.size()-1).setCog(new Line(this.boatInformarionList.get(this.boatInformarionList.size()-2),this.boatInformarionList.get(this.boatInformarionList.size()-1)).getCog());
-//            double elements = 0;
-//            double sum = 0;
-//            for ( int i = 0; i < this.boatInformarionList.size()-1 ; i++ ) {
-//                if ( this.boatInformarionList.get(i) != null && this.boatInformarionList.get(i).getSog() != null ) {
-//                    sum = sum + this.boatInformarionList.get(i).getSog();
-//                    elements++;
-//                }
-//            }
-//            this.boatInformarionList.get(this.boatInformarionList.size()-1).setSmoothSog(PeregrinaNMEAUtils.defaultPrecision(sum/elements));
-//        }
-        System.out.printf("* %2d ***********************************************************************************************************************************\n", this.boatInformarionList.size());
-        System.out.println(this.toString());
+    public void setWaypoint(Point point) {
+        this.waypoint = point;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.boatInformarionList.size(); i++) {
-            sb.append(i).append(" - ").append(PeregrinaNMEAUtils.boatInformarionToFormattedString(this.boatInformarionList.get(i))).append("\n");
+    public void addPostion(BoatPosition boatPosition) {
+        // Making space if full
+        this.boatPositionList.add(boatPosition);
+        if (this.boatPositionList.size() > DATA_BUFFER_SIZE) {
+            this.boatPositionList.removeFirst();
         }
+
+        // Quick and dirty stuff
+        Double vmg = Double.NaN;
+        Double dtw = Double.NaN;
+        if ( waypoint != null && waypoint.isValid() ) {
+            dtw = boatPosition.distanceInNauticalMiles( waypoint );
+            if ( this.boatPositionList.size() > 1 ) {
+                vmg = boatPosition.distanceInNauticalMiles(this.boatPositionList.get(this.boatPositionList.size() - 2))
+                        /
+                        boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
+            }
+        }
+        System.out.println("************************************************************************************************************************************");
+        System.out.println(this.toPostionString());
+        System.out.println("Waypoint: " +   this.waypoint.toString());
+        System.out.println("DTW = " + PeregrinaNMEAUtils.speedFormat(dtw) + " Nm.");
+        System.out.println("VMG = " + PeregrinaNMEAUtils.speedFormat(vmg) + " Kn.\n");
+    }
+
+    public void addSpeed(Double speed) {
+        // Making space if full
+        this.boatSpeedList.add(speed);
+        if (this.boatSpeedList.size() > DATA_BUFFER_SIZE) {
+            this.boatSpeedList.removeFirst();
+        }
+
+        // Quick and dirty stuff
+        System.out.println(this.toSpeedsString());
+    }
+
+    public String toPostionString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append( "Cached positions: (").append( this.boatPositionList.size()).append(")\n" );
+        this.boatPositionList.stream().forEach( position -> {
+            sb.append(PeregrinaNMEAUtils.boatInformarionToFormattedString(position)).append("\n" );
+        });
+        return sb.toString();
+    }
+
+    public String toSpeedsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append( "Cached speeds: (").append( this.boatSpeedList.size()).append(")\n" );
+        this.boatSpeedList.stream().forEach( speed -> {
+            sb.append(PeregrinaNMEAUtils.speedFormat(speed)).append(", " );
+        });
+        sb.append("[" );
+        sb.append(PeregrinaNMEAUtils.speedFormat(this.boatSpeedList.stream().filter(d -> d != null && !d.equals(Double.NaN)).
+                mapToDouble(d -> d).average().orElse(Double.NaN)));
+        sb.append("]");
         return sb.toString();
     }
 }

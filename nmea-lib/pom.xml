@@ -59,11 +59,6 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.mariuszgromada.math</groupId>
-			<artifactId>MathParser.org-mXparser</artifactId>
-		</dependency>
-
 		<!-- Paramaters -->
 		<dependency>
 			<groupId>com.martiansoftware</groupId>

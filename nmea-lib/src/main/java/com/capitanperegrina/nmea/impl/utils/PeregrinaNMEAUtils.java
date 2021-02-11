@@ -1,6 +1,6 @@
 package com.capitanperegrina.nmea.impl.utils;
 
-import com.capitanperegrina.nmea.api.model.beans.BoatInformarion;
+import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
@@ -140,15 +140,15 @@ public class PeregrinaNMEAUtils {
         }
     }
 
-    public static Double defaultPrecision(Double d) {
-        if (d==null) {
-            return null;
-        }
-        if (d.equals(Double.NaN)) {
-            return Double.NaN;
-        }
-        return Double.parseDouble(DEFAULT_PARSEABLE_FORMATTER.format(d));
-    }
+//    public static Double defaultPrecision(Double d) {
+//        if (d==null) {
+//            return null;
+//        }
+//        if (d.equals(Double.NaN)) {
+//            return Double.NaN;
+//        }
+//        return Double.parseDouble(DEFAULT_PARSEABLE_FORMATTER.format(d));
+//    }
 
     private static Double integerPart(Double d) {
         BigDecimal bigDecimal = new BigDecimal(String.valueOf(d));
@@ -180,7 +180,7 @@ public class PeregrinaNMEAUtils {
         return ret.toString();
     }
 
-    private static String speedFormat(Double d) {
+    public static String speedFormat(Double d) {
         if ( d != null && !d.equals(Double.NaN) ) {
             return SPEED_FORMATTER.format(d);
         }
@@ -215,16 +215,11 @@ public class PeregrinaNMEAUtils {
         return "-.---";
     }
 
-    public static String boatInformarionToFormattedString(BoatInformarion bi) {
-        return "BoatInformarion {" +
+    public static String boatInformarionToFormattedString(BoatPosition bi) {
+        return "BoatPosition {" +
                 "date=" + bi.getDate() +
-                ", latitude=" + defaultFormat(bi.getLatitude()) +
-                ", longitude=" + defaultFormat(bi.getLongitude() ) +
-                ", cog=" + courseFormat(bi.getCog()) +
-                "  sog=" + speedFormat(bi.getSog()) +
-                ", smoothSog=" + speedFormat(bi.getSmoothSog()) +
-                ", milesFromLast=" + defaultFormat(bi.getMilesFromLast()) +
-                ", hoursFromLast=" + defaultFormat(bi.getHoursFromLast()) +
+                ", latitude=" + coordinateFormat(bi.getLatitude()) +
+                ", longitude=" + coordinateFormat(bi.getLongitude() ) +
                 '}';
     }
 }

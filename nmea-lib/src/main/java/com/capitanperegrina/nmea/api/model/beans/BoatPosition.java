@@ -9,6 +9,10 @@ import java.util.Date;
 public class BoatPosition extends Point {
     public final Date date;
 
+    public BoatPosition() {
+        this.date = null;
+    }
+
     public BoatPosition(Date date) {
         this.date = date;
     }
