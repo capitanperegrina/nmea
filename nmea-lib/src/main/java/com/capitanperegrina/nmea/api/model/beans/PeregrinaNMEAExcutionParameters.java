@@ -15,9 +15,11 @@ public class PeregrinaNMEAExcutionParameters {
     private final Integer screenWidth;
     private final Integer screenHeight;
 
+    private final boolean enableKeyboard;
+
     public PeregrinaNMEAExcutionParameters(String serialPortName, Integer baudRate, Integer dataBits,
             Integer stopBits, Integer parity, String operation, Integer seconds, String screenSerialPortName,
-            Integer screenWidth, Integer screenHeight) {
+            Integer screenWidth, Integer screenHeight, boolean enableKeyboard) {
         this.serialPortName = serialPortName;
         this.baudRate = baudRate;
         this.dataBits = dataBits;
@@ -28,6 +30,7 @@ public class PeregrinaNMEAExcutionParameters {
         this.screenSerialPortName = screenSerialPortName;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.enableKeyboard = enableKeyboard;
     }
 
     public String getSerialPortName() {
@@ -70,6 +73,10 @@ public class PeregrinaNMEAExcutionParameters {
         return screenHeight;
     }
 
+    public boolean isEnableKeyboard() {
+        return enableKeyboard;
+    }
+
     @Override
     public String toString() {
         return "PeregrinaNMEAExcutionParameters{" +
@@ -83,6 +90,7 @@ public class PeregrinaNMEAExcutionParameters {
                 ", screenSerialPortName='" + screenSerialPortName + '\'' +
                 ", screenWidth=" + screenWidth +
                 ", screenHeight=" + screenHeight +
+                ", enableKeyboard=" + enableKeyboard +
                 '}';
     }
 }

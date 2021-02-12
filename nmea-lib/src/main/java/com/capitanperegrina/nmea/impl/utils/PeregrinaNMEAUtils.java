@@ -6,6 +6,7 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.Switch;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -101,6 +102,10 @@ public class PeregrinaNMEAUtils {
                     .setShortFlag('h')
                     .setLongFlag("screenHeight");
 
+            Switch optEnableKeyboard = new Switch("Enable keyboard input")
+                    .setShortFlag('k')
+                    .setLongFlag("enableKeyboard");
+
             jsap.registerParameter(optGPSSerialPortName);
             jsap.registerParameter(optScreenSerialPortName);
             jsap.registerParameter(optOperation);
@@ -111,6 +116,7 @@ public class PeregrinaNMEAUtils {
             jsap.registerParameter(optSeconds);
             jsap.registerParameter(optScreenWidth);
             jsap.registerParameter(optScreenHeight);
+            jsap.registerParameter(optEnableKeyboard);
 
             JSAPResult config = jsap.parse(args);
 
@@ -133,7 +139,8 @@ public class PeregrinaNMEAUtils {
                     config.getInt(optSeconds.getID()),
                     config.getString(optScreenSerialPortName.getID()),
                     config.getInt(optScreenWidth.getID()),
-                    config.getInt(optScreenHeight.getID()));
+                    config.getInt(optScreenHeight.getID()),
+                    config.getBoolean(optEnableKeyboard.getID()));
         } catch (JSAPException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

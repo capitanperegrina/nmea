@@ -32,6 +32,12 @@
 			<artifactId>jssc</artifactId>
 		</dependency>
 
+		<!-- Keyboard stuff -->
+		<dependency>
+			<groupId>com.1stleg</groupId>
+			<artifactId>jnativehook</artifactId>
+		</dependency>
+
 		<!-- Spring  Stuff -->
 		<dependency>
 			<groupId>org.springframework</groupId>
