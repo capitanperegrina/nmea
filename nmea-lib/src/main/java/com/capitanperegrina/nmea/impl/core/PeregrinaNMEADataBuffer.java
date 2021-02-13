@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
 import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
+import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
 
@@ -14,6 +15,7 @@ public class PeregrinaNMEADataBuffer {
 
     private final LinkedList<BoatPosition> boatPositionList = new LinkedList<>();
     private final LinkedList<Double> boatSpeedList = new LinkedList<>();
+    private int currentWaypoint = -1;
     private Point waypoint;
 
     private PeregrinaNMEADataBuffer() {
@@ -35,6 +37,16 @@ public class PeregrinaNMEADataBuffer {
         this.waypoint = point;
     }
 
+    public int getCurrentWaypoint() {
+        return currentWaypoint;
+    }
+
+    public void setCurrentWaypoint(int newWaypoint) {
+        this.currentWaypoint = newWaypoint;
+        this.waypoint = WaypointsNaming.getInternalWaypoints().get(currentWaypoint);
+        System.out.println("New waypoint: " +   this.waypoint.toString());
+    }
+
     public void addPostion(BoatPosition boatPosition) {
         // Making space if full
         this.boatPositionList.add(boatPosition);
@@ -45,6 +57,12 @@ public class PeregrinaNMEADataBuffer {
         // Quick and dirty stuff
         Double vmg = Double.NaN;
         Double dtw = Double.NaN;
+
+        // System.out.println("************************************************************************************************************************************");
+        // System.out.println(this.toPostionString());
+        System.out.println(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
+
+
         if ( waypoint != null && waypoint.isValid() ) {
             dtw = boatPosition.distanceInNauticalMiles( waypoint );
             if ( this.boatPositionList.size() > 1 ) {
@@ -52,12 +70,8 @@ public class PeregrinaNMEADataBuffer {
                         /
                         boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
             }
+            System.out.println("Waypoint: " + this.waypoint.toString() + "DTW = " + PeregrinaNMEAUtils.speedFormat(dtw) + " Nm.  VMC = " + PeregrinaNMEAUtils.speedFormat(vmg) + " Kn.");
         }
-        System.out.println("************************************************************************************************************************************");
-        System.out.println(this.toPostionString());
-        System.out.println("Waypoint: " +   this.waypoint.toString());
-        System.out.println("DTW = " + PeregrinaNMEAUtils.speedFormat(dtw) + " Nm.");
-        System.out.println("VMG = " + PeregrinaNMEAUtils.speedFormat(vmg) + " Kn.\n");
     }
 
     public void addSpeed(Double speed) {
@@ -82,14 +96,14 @@ public class PeregrinaNMEADataBuffer {
 
     public String toSpeedsString() {
         StringBuilder sb = new StringBuilder();
-        sb.append( "Cached speeds: (").append( this.boatSpeedList.size()).append(")\n" );
+        sb.append( "Cached speeds: (").append( this.boatSpeedList.size()).append(") : " );
         this.boatSpeedList.stream().forEach( speed -> {
             sb.append(PeregrinaNMEAUtils.speedFormat(speed)).append(", " );
         });
-        sb.append("[" );
+        sb.append(" Smooth Spedd: " );
         sb.append(PeregrinaNMEAUtils.speedFormat(this.boatSpeedList.stream().filter(d -> d != null && !d.equals(Double.NaN)).
                 mapToDouble(d -> d).average().orElse(Double.NaN)));
-        sb.append("]");
+        sb.append("");
         return sb.toString();
     }
 }

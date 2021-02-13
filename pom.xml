@@ -45,13 +45,6 @@
                 <version>2.1.0</version>
             </dependency>
 
-            <!-- Spring  Stuff -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${org.springframework.version}</version>
-            </dependency>
-
             <!-- Utils Stuff -->
             <dependency>
                 <groupId>org.apache.commons</groupId>

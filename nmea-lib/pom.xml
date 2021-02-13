@@ -38,12 +38,6 @@
 			<artifactId>jnativehook</artifactId>
 		</dependency>
 
-		<!-- Spring  Stuff -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-
 		<!-- Utils Stuff -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
