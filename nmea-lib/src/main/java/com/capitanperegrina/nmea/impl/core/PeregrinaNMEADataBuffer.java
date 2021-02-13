@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
 import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
+import com.capitanperegrina.nmea.api.model.service.ITrackService;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
 
@@ -17,6 +18,7 @@ public class PeregrinaNMEADataBuffer {
     private final LinkedList<Double> boatSpeedList = new LinkedList<>();
     private int currentWaypoint = -1;
     private Point waypoint;
+    private ITrackService trackService;
 
     private PeregrinaNMEADataBuffer() {
         if (singleton != null) {
@@ -31,6 +33,10 @@ public class PeregrinaNMEADataBuffer {
             }
         }
         return singleton;
+    }
+
+    public void setTrackService(ITrackService trackService) {
+        this.trackService = trackService;
     }
 
     public void setWaypoint(Point point) {
@@ -62,7 +68,6 @@ public class PeregrinaNMEADataBuffer {
         // System.out.println(this.toPostionString());
         System.out.println(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
 
-
         if ( waypoint != null && waypoint.isValid() ) {
             dtw = boatPosition.distanceInNauticalMiles( waypoint );
             if ( this.boatPositionList.size() > 1 ) {
@@ -72,6 +77,7 @@ public class PeregrinaNMEADataBuffer {
             }
             System.out.println("Waypoint: " + this.waypoint.toString() + "DTW = " + PeregrinaNMEAUtils.speedFormat(dtw) + " Nm.  VMC = " + PeregrinaNMEAUtils.speedFormat(vmg) + " Kn.");
         }
+        this.trackService.savePoint(boatPosition);
     }
 
     public void addSpeed(Double speed) {

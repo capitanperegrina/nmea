@@ -13,10 +13,19 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <org.springframework.version>5.2.1.RELEASE</org.springframework.version>
+        <org.spring-boot.version>2.4.2</org.spring-boot.version>
+
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Own shit -->
+            <dependency>
+                <groupId>com.capitanperegrina</groupId>
+                <artifactId>utils</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
+
             <!-- Marine API -->
             <dependency>
                 <groupId>net.sf.marineapi</groupId>
@@ -45,6 +54,25 @@
                 <version>2.1.0</version>
             </dependency>
 
+            <!-- Spring Stuff -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+
             <!-- Utils Stuff -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -59,6 +87,12 @@
             </dependency>
 
             <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>1.4</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.javatuples</groupId>
                 <artifactId>javatuples</artifactId>
                 <version>1.2</version>
@@ -68,6 +102,12 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>2.10.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>2.7.2</version>
             </dependency>
 
             <!-- Paramaters -->

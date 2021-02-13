@@ -14,6 +14,11 @@
 	<name>NMEA 0183 Library</name>
 	
 	<dependencies>
+		<dependency>
+			<groupId>com.capitanperegrina</groupId>
+			<artifactId>utils</artifactId>
+		</dependency>
+
 		<!-- Marine API -->
 		<dependency>
 			<groupId>net.sf.marineapi</groupId>
@@ -38,6 +43,22 @@
 			<artifactId>jnativehook</artifactId>
 		</dependency>
 
+		<!-- Spring Stuff -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+
 		<!-- Utils Stuff -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -50,6 +71,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.javatuples</groupId>
 			<artifactId>javatuples</artifactId>
 		</dependency>
@@ -59,12 +85,18 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+		</dependency>
+
 		<!-- Paramaters -->
 		<dependency>
 			<groupId>com.martiansoftware</groupId>
 			<artifactId>jsap</artifactId>
 		</dependency>
-    </dependencies>
+
+	</dependencies>
 	 
 	<build>
 		<plugins>
