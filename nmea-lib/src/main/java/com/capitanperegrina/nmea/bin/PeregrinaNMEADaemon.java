@@ -44,19 +44,17 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             spr.start();
             System.out.println("Started for " + params.getSeconds() + " seconds.");
 
-                Thread.sleep(params.getSeconds()*1000);
-
+            Thread.sleep(params.getSeconds()*1000);
 
             System.out.println("Stopping...");
             spr.stop();
             System.out.println("Stopped");
+
         } catch ( InterruptedException e ) {
             System.out.println(e.getMessage());
         } finally {
-            // TODO - Generate gpxFile and delete database table.
-            // this.trackService.generateGpxFile();
-            // this.trackService.generateCSVFile(); ¿Maybe?
-            // this.trackService.emptyDatabase();
+            this.trackService.generateGpxFile();
+            this.trackService.cleanData();
         }
     }
 

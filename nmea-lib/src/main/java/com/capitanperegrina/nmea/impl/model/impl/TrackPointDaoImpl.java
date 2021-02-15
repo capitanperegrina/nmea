@@ -129,7 +129,7 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
 
     @Override
     public void delete(TrackPointEntity obj) {
-		StringBuilder q = new StringBuilder();
+        StringBuilder q = new StringBuilder();
 		Object[] p = toParamsKey(obj);
 		q.append(generateDeleteQuery());
 		if (LOGGER.isTraceEnabled()) {
@@ -189,6 +189,16 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
             LOGGER.trace(QueryUtils.queryLog(q, p));
         }
         return this.jdbcTemplate.query(q.toString(), p, getRowMapper());
+    }
+
+    public void emptyTable() {
+        StringBuilder q = new StringBuilder();
+        Object[] p = new Object[] {};
+        q.append("TRUNCATE TABLE " + TABLE);
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace(QueryUtils.queryLog(q, p));
+        }
+        this.jdbcTemplate.update(q.toString(), p);
     }
 
     @Override

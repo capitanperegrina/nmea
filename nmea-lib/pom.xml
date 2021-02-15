@@ -43,6 +43,12 @@
 			<artifactId>jnativehook</artifactId>
 		</dependency>
 
+		<!-- GPX stuff -->
+		<dependency>
+			<groupId>io.jenetics</groupId>
+			<artifactId>jpx</artifactId>
+		</dependency>
+
 		<!-- Spring Stuff -->
 		<dependency>
 			<groupId>org.springframework</groupId>

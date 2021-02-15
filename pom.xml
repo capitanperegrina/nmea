@@ -54,6 +54,13 @@
                 <version>2.1.0</version>
             </dependency>
 
+            <!-- GPX stuff -->
+            <dependency>
+                <groupId>io.jenetics</groupId>
+                <artifactId>jpx</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+
             <!-- Spring Stuff -->
             <dependency>
                 <groupId>org.springframework</groupId>

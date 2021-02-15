@@ -14,4 +14,6 @@ public interface ITrackPointDao {
     void delete(TrackPointEntity obj);
 
     List<TrackPointEntity> find(TrackPointEntity obj);
+
+    void emptyTable();
 }
