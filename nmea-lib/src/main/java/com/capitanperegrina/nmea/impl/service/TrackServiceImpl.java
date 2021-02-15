@@ -53,7 +53,10 @@ public class TrackServiceImpl implements ITrackService {
         // Generate GPX
         System.out.print("Building GPX object... ");
         TrackSegment.Builder tsBuilder = TrackSegment.builder();
-        trackPoints.stream().map(tp -> tsBuilder.addPoint( p -> p.lat(tp.getLat()).lon(tp.getLon()).ele(0) ) );
+        for ( TrackPointEntity tp : trackPoints ) {
+            tsBuilder.addPoint(WayPoint.builder().lat(tp.getLat()).lon(tp.getLon()).ele(0).build());
+        }
+        // trackPoints.stream().map(tp -> tsBuilder.addPoint( p -> p.lat(tp.getLat()).lon(tp.getLon()).ele(0) ) );
         Track track = Track.builder().name("Peregrina Nmea Track").addSegment( tsBuilder.build() ).build();
         final GPX gpx = GPX.builder()
             .addTrack(track)

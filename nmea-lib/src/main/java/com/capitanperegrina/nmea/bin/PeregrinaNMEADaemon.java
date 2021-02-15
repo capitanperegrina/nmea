@@ -53,8 +53,9 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
         } catch ( InterruptedException e ) {
             System.out.println(e.getMessage());
         } finally {
-            this.trackService.generateGpxFile();
-            this.trackService.cleanData();
+            // TODO - Do this command line dependent.
+            // this.trackService.generateGpxFile();
+            // this.trackService.cleanData();
         }
     }
 
@@ -79,6 +80,7 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
     // Buggy keyboard listener methods.
     public void nativeKeyReleased(NativeKeyEvent e) {
+        // System.out.printf("    0x%08X     %5d    %s\n", e.getKeyCode(), e.getKeyCode(), NativeKeyEvent.getKeyText(e.getKeyCode()));
         if ( e.getKeyCode() == KeyboardNaming.PLUS ) {
             if (PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() < WaypointsNaming.getInternalWaypoints().size() - 1) {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() + 1);
