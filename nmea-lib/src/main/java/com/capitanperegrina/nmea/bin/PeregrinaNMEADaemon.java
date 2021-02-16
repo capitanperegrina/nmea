@@ -1,5 +1,6 @@
 package com.capitanperegrina.nmea.bin;
 
+import com.capitanperegrina.nmea.api.model.PeregrinaNMEAOperations;
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
 import com.capitanperegrina.nmea.api.model.naming.KeyboardNaming;
 import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
@@ -27,6 +28,16 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
     private ITrackService trackService;
 
     public void run(PeregrinaNMEAExcutionParameters params) {
+        if (PeregrinaNMEAOperations.EXPORT.toString().equals(params.getOperation())) {
+            this.trackService.generateGpxFile();
+        } else if (PeregrinaNMEAOperations.RESET.toString().equals(params.getOperation())) {
+            this.trackService.cleanData();
+        } else {
+            doGpsOperations(params);
+        }
+    }
+
+    private void doGpsOperations(PeregrinaNMEAExcutionParameters params) {
         try {
             if ( params.isEnableKeyboard() ) {
                 // If keyboard is enabled initize listeners.
@@ -52,10 +63,6 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
         } catch ( InterruptedException e ) {
             System.out.println(e.getMessage());
-        } finally {
-            // TODO - Do this command line dependent.
-            // this.trackService.generateGpxFile();
-            // this.trackService.cleanData();
         }
     }
 

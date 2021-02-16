@@ -42,8 +42,8 @@ public class TrackServiceImpl implements ITrackService {
         System.out.print("Generating filename...");
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-        String text = sdf.format(date) + ".gpx";
-        System.out.println("OK -> " + text);
+        String fileName = sdf.format(date) + ".gpx";
+        System.out.println("OK -> " + fileName);
 
         // ReadPoints
         System.out.print("Reading points from database... ");
@@ -56,16 +56,15 @@ public class TrackServiceImpl implements ITrackService {
         for ( TrackPointEntity tp : trackPoints ) {
             tsBuilder.addPoint(WayPoint.builder().lat(tp.getLat()).lon(tp.getLon()).ele(0).build());
         }
-        // trackPoints.stream().map(tp -> tsBuilder.addPoint( p -> p.lat(tp.getLat()).lon(tp.getLon()).ele(0) ) );
         Track track = Track.builder().name("Peregrina Nmea Track").addSegment( tsBuilder.build() ).build();
-        final GPX gpx = GPX.builder()
-            .addTrack(track)
-                .build();
+        final GPX gpx = GPX.builder().metadata(
+                Metadata.builder().time(date.getTime()).name("PeregrinaNMEA Export").build())
+                .addTrack(track).build();
         System.out.println("OK");
 
         try {
             System.out.print("Writing GPX file... ");
-            GPX.write(gpx, Paths.get("track.gpx"));
+            GPX.write(gpx, Paths.get(fileName));
             System.out.println("OK");
         } catch ( IOException e ) {
             System.out.println("ERROR : ");

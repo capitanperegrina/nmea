@@ -1,5 +1,6 @@
 package com.capitanperegrina.nmea.impl.core.serialportreader.listener;
 
+import com.capitanperegrina.nmea.api.model.PeregrinaNMEAOperations;
 import com.capitanperegrina.nmea.impl.core.parsers.SentenceParserHelper;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
@@ -31,9 +32,9 @@ public class SerialPortReaderListener implements SerialPortEventListener {
                     if (buffer.length() > 0) {
                         String nmea = buffer.toString();
                         if (StringUtils.isNotEmpty(nmea)) {
-                            if ( operation.equals("LIST")) {
+                            if (PeregrinaNMEAOperations.LIST.toString().equals(this.operation)) {
                                 System.out.println(nmea);
-                            } else if ( operation.equals("PARSE")) {
+                            } else if (PeregrinaNMEAOperations.PARSE.toString().equals(this.operation)) {
                                 this.sp.parse(nmea);
                             }
                         }
