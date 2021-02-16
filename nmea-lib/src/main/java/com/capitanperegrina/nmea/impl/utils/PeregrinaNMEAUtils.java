@@ -2,11 +2,13 @@ package com.capitanperegrina.nmea.impl.utils;
 
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
+import com.capitanperegrina.nmea.impl.core.serialportreader.listener.SerialPortReaderListener;
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -14,6 +16,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class PeregrinaNMEAUtils {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(PeregrinaNMEAUtils.class);
 
     private static NumberFormat DEFAULT_FORMATTER = new DecimalFormat("#0.00000");
     private static NumberFormat DEFAULT_PARSEABLE_FORMATTER = DecimalFormat.getInstance(Locale.US);
@@ -142,7 +146,7 @@ public class PeregrinaNMEAUtils {
                     config.getInt(optScreenHeight.getID()),
                     config.getBoolean(optEnableKeyboard.getID()));
         } catch (JSAPException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(),e);
             throw new RuntimeException(e);
         }
     }

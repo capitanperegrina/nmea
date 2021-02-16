@@ -11,6 +11,7 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,8 @@ import java.util.logging.Logger;
 
 @Component
 public class PeregrinaNMEADaemon implements NativeKeyListener {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(PeregrinaNMEADaemon.class);
 
     @Autowired
     private SerialPortReader spr;
@@ -51,18 +54,13 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             PeregrinaNMEADataBuffer.getInstance().setTrackService(this.trackService);
             this.spr.configure(params);
 
-            System.out.println("Starting...");
             spr.start();
-            System.out.println("Started for " + params.getSeconds() + " seconds.");
-
+            LOGGER.info("Started for {} seconds.", params.getSeconds());
             Thread.sleep(params.getSeconds()*1000);
 
-            System.out.println("Stopping...");
             spr.stop();
-            System.out.println("Stopped");
-
         } catch ( InterruptedException e ) {
-            System.out.println(e.getMessage());
+            LOGGER.error(e.getMessage(),e);
         }
     }
 
@@ -77,9 +75,8 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
         try {
             GlobalScreen.registerNativeHook();
         }
-        catch (NativeHookException ex) {
-            System.err.println("There was a problem registering the native hook.");
-            System.err.println(ex.getMessage());
+        catch (NativeHookException e) {
+            LOGGER.error("There was a problem registering the native hook.", e);
             System.exit(1);
         }
         GlobalScreen.addNativeKeyListener(this);
@@ -87,7 +84,7 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
     // Buggy keyboard listener methods.
     public void nativeKeyReleased(NativeKeyEvent e) {
-        // System.out.printf("    0x%08X     %5d    %s\n", e.getKeyCode(), e.getKeyCode(), NativeKeyEvent.getKeyText(e.getKeyCode()));
+        LOGGER.debug(String.format("    0x%08X     %5d    %s\n", e.getKeyCode(), e.getKeyCode(), NativeKeyEvent.getKeyText(e.getKeyCode())));
         if ( e.getKeyCode() == KeyboardNaming.PLUS ) {
             if (PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() < WaypointsNaming.getInternalWaypoints().size() - 1) {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() + 1);

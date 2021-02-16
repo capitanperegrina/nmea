@@ -11,8 +11,11 @@ import net.sf.marineapi.nmea.sentence.VTGSentence;
 import net.sf.marineapi.nmea.util.Position;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.slf4j.LoggerFactory;
 
 public class SentenceParserHelper {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(SentenceParserHelper.class);
 
     private final SentenceFactory sf = SentenceFactory.getInstance();
 
@@ -29,8 +32,7 @@ public class SentenceParserHelper {
             VTGBean vtgBean = SentenceToBeanUtils.toBean(vtg);
             PeregrinaNMEADataBuffer.getInstance().addSpeed(vtg.getSpeedKnots());
         } catch ( DataNotAvailableException e ) {
-            // TODO - No data to screen
-            System.err.println("Data not available");
+            LOGGER.error("Data not available");
         }
     }
 
@@ -41,8 +43,7 @@ public class SentenceParserHelper {
             BoatPosition p = new BoatPosition(pos.getLatitude(), pos.getLongitude(), jodaTimeParser.parseDateTime(rmc.getDate().toISO8601(rmc.getTime())).toDate());
             PeregrinaNMEADataBuffer.getInstance().addPostion(p);
         } catch ( DataNotAvailableException e ) {
-            // TODO - No data to screen
-            System.err.println("Data not available");
+            LOGGER.error("Data not available");
         }
     }
 }

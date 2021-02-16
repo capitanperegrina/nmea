@@ -1,14 +1,19 @@
 package com.capitanperegrina.nmea.impl.core.serialportreader;
 
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
+import com.capitanperegrina.nmea.impl.core.PeregrinaNMEADataBuffer;
 import com.capitanperegrina.nmea.impl.core.serialportreader.listener.SerialPortReaderListener;
 import jssc.SerialPort;
 import jssc.SerialPortException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SerialPortReader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SerialPortReader.class);
 
     private PeregrinaNMEAExcutionParameters params;
     private SerialPort serialPort;
@@ -25,16 +30,16 @@ public class SerialPortReader {
             this.serialPort.setParams(params.getBaudRate(), params.getDataBits(), params.getStopBits(), params.getParity());
             this.serialPort.setEventsMask(mask);
             this.serialPort.addEventListener(new SerialPortReaderListener(this.serialPort, params.getOperation()));
-        } catch (SerialPortException ex) {
-            ex.printStackTrace();
+        } catch (SerialPortException e) {
+            LOGGER.error(e.getMessage(),e);
         }
     }
 
     public void stop() {
         try {
             this.serialPort.closePort();
-        } catch (SerialPortException ex) {
-            ex.printStackTrace();
+        } catch (SerialPortException e) {
+            LOGGER.error(e.getMessage(),e);
         }
     }
 }

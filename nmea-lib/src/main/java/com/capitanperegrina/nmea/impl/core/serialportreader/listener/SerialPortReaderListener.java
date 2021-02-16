@@ -2,13 +2,17 @@ package com.capitanperegrina.nmea.impl.core.serialportreader.listener;
 
 import com.capitanperegrina.nmea.api.model.PeregrinaNMEAOperations;
 import com.capitanperegrina.nmea.impl.core.parsers.SentenceParserHelper;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.SegmentDrawingHelper;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 
 public class SerialPortReaderListener implements SerialPortEventListener {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(SerialPortReaderListener.class);
 
     private static String CR = "\n";
     private static String LF = "\r";
@@ -48,15 +52,15 @@ public class SerialPortReaderListener implements SerialPortEventListener {
             }
         } else if (event.isCTS()) {//If CTS line has changed state
             if (event.getEventValue() == 1) {//If line is ON
-                System.out.println("CTS - ON");
+                LOGGER.info("CTS - ON");
             } else {
-                System.out.println("CTS - OFF");
+                LOGGER.info("CTS - OFF");
             }
         } else if (event.isDSR()) {///If DSR line has changed state
             if (event.getEventValue() == 1) {//If line is ON
-                System.out.println("DSR - ON");
+                LOGGER.info("DSR - ON");
             } else {
-                System.out.println("DSR - OFF");
+                LOGGER.info("DSR - ON");
             }
         }
     }

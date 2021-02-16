@@ -7,9 +7,14 @@ import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
 import com.capitanperegrina.nmea.api.model.service.ITrackService;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
+import com.capitanperegrina.nmea.impl.model.impl.TrackPointDaoImpl;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PeregrinaNMEADataBuffer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PeregrinaNMEADataBuffer.class);
 
     private static volatile PeregrinaNMEADataBuffer singleton;
     private static Integer DATA_BUFFER_SIZE = 10;
@@ -50,7 +55,7 @@ public class PeregrinaNMEADataBuffer {
     public void setCurrentWaypoint(int newWaypoint) {
         this.currentWaypoint = newWaypoint;
         this.waypoint = WaypointsNaming.getInternalWaypoints().get(currentWaypoint);
-        System.out.println("New waypoint: " +   this.waypoint.toString());
+        LOGGER.info("New waypoint: {}", this.waypoint.toString());
     }
 
     public void addPostion(BoatPosition boatPosition) {
@@ -64,9 +69,7 @@ public class PeregrinaNMEADataBuffer {
         Double vmg = Double.NaN;
         Double dtw = Double.NaN;
 
-        // System.out.println("************************************************************************************************************************************");
-        // System.out.println(this.toPostionString());
-        System.out.println(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
+        LOGGER.info(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
 
         if ( waypoint != null && waypoint.isValid() ) {
             dtw = boatPosition.distanceInNauticalMiles( waypoint );
@@ -75,7 +78,7 @@ public class PeregrinaNMEADataBuffer {
                         /
                         boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
             }
-            System.out.println("Waypoint: " + this.waypoint.toString() + "DTW = " + PeregrinaNMEAUtils.speedFormat(dtw) + " Nm.  VMC = " + PeregrinaNMEAUtils.speedFormat(vmg) + " Kn.");
+            LOGGER.info("Waypoint: {}    DTW = {} Nm.    VMC = {} Kn.", this.waypoint.toString(), PeregrinaNMEAUtils.speedFormat(dtw), PeregrinaNMEAUtils.speedFormat(vmg));
         }
         this.trackService.savePoint(boatPosition);
     }
@@ -88,7 +91,7 @@ public class PeregrinaNMEADataBuffer {
         }
 
         // Quick and dirty stuff
-        System.out.println(this.toSpeedsString());
+        LOGGER.info(this.toSpeedsString());
     }
 
     public String toPostionString() {

@@ -1,17 +1,20 @@
 package com.capitanperegrina.nmea.impl.epaper;
 
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
-import com.capitanperegrina.nmea.impl.epaper.drawing.DrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven.SevenSegmentDrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.SixteenSegmentDrawingHelper;
+import com.capitanperegrina.nmea.impl.model.impl.TrackPointDaoImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tk.schmid.epaper.display.EPaperDisplay;
 import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
 
-import java.text.DecimalFormat;
 
 import org.javatuples.Pair;
 
 public class PeregrinaNMEADisplay {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrackPointDaoImpl.class);
 
     private static volatile PeregrinaNMEADisplay singleton;
 
@@ -41,14 +44,14 @@ public class PeregrinaNMEADisplay {
                 this.sixteenSegmentDrawingHelper = new SixteenSegmentDrawingHelper(this.ePaperDisplay);
                 this.sevenSegmentDrawingHelper = new SevenSegmentDrawingHelper(this.ePaperDisplay);
                 this.ePaperDisplay.connect();
-                System.out.println("Connected...");
-                System.out.println("Active storage: " + this.ePaperDisplay.getActiveStorage());
-                System.out.println("Display Direction: " + this.ePaperDisplay.getDisplayDirection());
-                System.out.println("English Font Size: " + this.ePaperDisplay.getEnglishFontSize());
-                System.out.println("Chinese Font Size " + this.ePaperDisplay.getChineseFontSize());
-                System.out.println("Drawing Color: " + this.ePaperDisplay.getDrawingColor());
-                System.out.println("Background Color: " + this.ePaperDisplay.getBackgroundColor());
-                System.out.println("Baud Rate: " + this.ePaperDisplay.getBaudRate());
+                LOGGER.info("Connected...");
+                LOGGER.info("Active storage: " + this.ePaperDisplay.getActiveStorage());
+                LOGGER.info("Display Direction: " + this.ePaperDisplay.getDisplayDirection());
+                LOGGER.info("English Font Size: " + this.ePaperDisplay.getEnglishFontSize());
+                LOGGER.info("Chinese Font Size " + this.ePaperDisplay.getChineseFontSize());
+                LOGGER.info("Drawing Color: " + this.ePaperDisplay.getDrawingColor());
+                LOGGER.info("Background Color: " + this.ePaperDisplay.getBackgroundColor());
+                LOGGER.info("Baud Rate: " + this.ePaperDisplay.getBaudRate());
             }
         }
     }
@@ -69,5 +72,23 @@ public class PeregrinaNMEADisplay {
         if ( this.ePaperDisplay != null ) {
             this.ePaperDisplay.clearScreen();
         }
+    }
+
+    public void splashScreen() {
+        // Show splash image
+        this.clearScreen();
+        this.ePaperDisplay.displayImage(0,0, "splashImage.png");
+        this.ePaperDisplay.repaint();
+
+        // Wait 2 seconds.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            LOGGER.info(e.getMessage());
+        }
+
+        // Clear screen
+        this.clearScreen();
+        this.ePaperDisplay.repaint();
     }
 }

@@ -1,16 +1,22 @@
 package com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay;
 
+import com.capitanperegrina.nmea.bin.PeregrinaNMEADaemon;
 import com.capitanperegrina.nmea.impl.epaper.drawing.DrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.components.SegmentComponent;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SegmentsNaming;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.javatuples.Pair;
+import org.slf4j.LoggerFactory;
 import tk.schmid.epaper.display.EPaperDisplay;
 
 import java.util.List;
 
 public abstract class SegmentDrawingHelper extends DrawingHelper {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(SegmentDrawingHelper.class);
+
+    private static final String NOT_PROPPERLY_DECLARED_COMPONENT = "Not propperly declared component: {}";
 
     public SegmentDrawingHelper(EPaperDisplay screen) {
         super(screen);
@@ -48,7 +54,7 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
                     int y2 = offsetStart.getValue1() + segmentComponent.getListaCoordenadas().get(2).getValue1() * scale;
                     this.screen.drawTriangle(x0, y0, x1, y1, x2, y2, SegmentsNaming.FILLED);
                 } else {
-                    System.err.println("Not fully declared component: " + segmentComponent.toString());
+                    LOGGER.error(NOT_PROPPERLY_DECLARED_COMPONENT, segmentComponent.toString());
                 }
                 break;
             case RECTANGLE:
@@ -59,7 +65,7 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
                     int y1 = offsetStart.getValue1() + segmentComponent.getListaCoordenadas().get(1).getValue1() * scale;
                     this.screen.drawRectangle(x0, y0, x1, y1, SegmentsNaming.FILLED);
                 } else {
-                    System.err.println("Not fully declared component: " + segmentComponent.toString());
+                    LOGGER.error(NOT_PROPPERLY_DECLARED_COMPONENT, segmentComponent.toString());
                 }
                 break;
             case CIRCLE:
@@ -69,7 +75,7 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
                     int r = segmentComponent.getListaCoordenadas().get(1).getValue0() * scale;
                     this.screen.drawCircle(x0, y0, r, SegmentsNaming.FILLED);
                 } else {
-                    System.err.println("Not fully declared component: " + segmentComponent.toString());
+                    LOGGER.error(NOT_PROPPERLY_DECLARED_COMPONENT, segmentComponent.toString());
                 }
                 break;
             case LINE:
@@ -80,7 +86,7 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
                     int y1 = offsetStart.getValue1() + segmentComponent.getListaCoordenadas().get(1).getValue1() * scale;
                     this.screen.drawLine(x0, y0, x1, y1);
                 } else {
-                    System.err.println("Not fully declared component: " + segmentComponent.toString());
+                    LOGGER.error(NOT_PROPPERLY_DECLARED_COMPONENT, segmentComponent.toString());
                 }
                 break;
             default:

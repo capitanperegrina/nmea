@@ -5,6 +5,7 @@ import com.capitanperegrina.nmea.api.model.entity.ITrackPointDao;
 import com.capitanperegrina.nmea.api.model.entity.TrackPointEntity;
 import com.capitanperegrina.nmea.api.model.service.ITrackService;
 import io.jenetics.jpx.*;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +15,12 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class TrackServiceImpl implements ITrackService {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TrackServiceImpl.class);
 
     @Autowired
     private ITrackPointDao trackpointDao;
@@ -39,19 +40,17 @@ public class TrackServiceImpl implements ITrackService {
     @Override
     public void generateGpxFile() {
         // Filename
-        System.out.print("Generating filename...");
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
         String fileName = sdf.format(date) + ".gpx";
-        System.out.println("OK -> " + fileName);
+        LOGGER.debug("Filename generated {}",fileName);
 
         // ReadPoints
-        System.out.print("Reading points from database... ");
         List<TrackPointEntity> trackPoints = this.trackpointDao.find(null);
-        System.out.println("OK -> " + trackPoints.size() + " points readed.");
+        LOGGER.debug("{} points readed from database", trackPoints.size());
 
         // Generate GPX
-        System.out.print("Building GPX object... ");
+        LOGGER.debug("Building GPX object... ");
         TrackSegment.Builder tsBuilder = TrackSegment.builder();
         for ( TrackPointEntity tp : trackPoints ) {
             tsBuilder.addPoint(WayPoint.builder().lat(tp.getLat()).lon(tp.getLon()).ele(0).build());
@@ -60,15 +59,15 @@ public class TrackServiceImpl implements ITrackService {
         final GPX gpx = GPX.builder().metadata(
                 Metadata.builder().time(date.getTime()).name("PeregrinaNMEA Export").build())
                 .addTrack(track).build();
-        System.out.println("OK");
+        LOGGER.debug("GPX generated.");
 
         try {
-            System.out.print("Writing GPX file... ");
+            LOGGER.debug("Writing GPX file... ");
             GPX.write(gpx, Paths.get(fileName));
-            System.out.println("OK");
+            LOGGER.debug("OK");
         } catch ( IOException e ) {
-            System.out.println("ERROR : ");
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(),e);
+            throw new RuntimeException(e);
         }
     }
 
