@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -55,23 +56,21 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             this.spr.configure(params);
 
             spr.start();
-            LOGGER.info("Started for {} seconds.", params.getSeconds());
-            Thread.sleep(params.getSeconds()*1000);
+//            LOGGER.info("Started for {} seconds.", params.getSeconds());
+//            Thread.sleep(params.getSeconds()*1000);
 
-            spr.stop();
+            LOGGER.info("Started forever.");
+            while (true) {
+                Thread.sleep(Long.MAX_VALUE);
+            }
+
+            // spr.stop();
         } catch ( InterruptedException e ) {
             LOGGER.error(e.getMessage(),e);
         }
     }
 
     private void configureKeyboard() {
-        // Clear previous logging configurations.
-        LogManager.getLogManager().reset();
-
-        // Get the logger for "org.jnativehook" and set the level to off.
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-
         try {
             GlobalScreen.registerNativeHook();
         }
@@ -84,7 +83,9 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
     // Buggy keyboard listener methods.
     public void nativeKeyReleased(NativeKeyEvent e) {
-        LOGGER.debug(String.format("    0x%08X     %5d    %s\n", e.getKeyCode(), e.getKeyCode(), NativeKeyEvent.getKeyText(e.getKeyCode())));
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace(String.format("    0x%08X     %5d    %s\n", e.getKeyCode(), e.getKeyCode(), NativeKeyEvent.getKeyText(e.getKeyCode())));
+        }
         if ( e.getKeyCode() == KeyboardNaming.PLUS ) {
             if (PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() < WaypointsNaming.getInternalWaypoints().size() - 1) {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() + 1);
@@ -106,5 +107,15 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
     public void nativeKeyTyped(NativeKeyEvent e) {
         // Nothing to do.
+    }
+
+    @PostConstruct
+    public void init() {
+        // Clear previous logging configurations.
+        LogManager.getLogManager().reset();
+
+        // Get the logger for "org.jnativehook" and set the level to off.
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
     }
 }
