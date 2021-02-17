@@ -38,9 +38,9 @@ public class PeregrinaNMEADisplay {
     }
 
     public void configure(PeregrinaNMEAExcutionParameters params) {
-        if (singleton == null) {
+        if (singleton != null) {
             synchronized (PeregrinaNMEADisplay.class) {
-                this.ePaperDisplay = new SerialEPaperDisplay(params.getSerialPortName());
+                this.ePaperDisplay = new SerialEPaperDisplay(params.getScreenSerialPortName());
                 this.sixteenSegmentDrawingHelper = new SixteenSegmentDrawingHelper(this.ePaperDisplay);
                 this.sevenSegmentDrawingHelper = new SevenSegmentDrawingHelper(this.ePaperDisplay);
                 this.ePaperDisplay.connect();

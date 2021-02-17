@@ -7,6 +7,7 @@ import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
 import com.capitanperegrina.nmea.api.model.service.ITrackService;
 import com.capitanperegrina.nmea.impl.core.PeregrinaNMEADataBuffer;
 import com.capitanperegrina.nmea.impl.core.serialportreader.SerialPortReader;
+import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -56,15 +57,10 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             this.spr.configure(params);
 
             spr.start();
-//            LOGGER.info("Started for {} seconds.", params.getSeconds());
-//            Thread.sleep(params.getSeconds()*1000);
-
             LOGGER.info("Started forever.");
             while (true) {
                 Thread.sleep(Long.MAX_VALUE);
             }
-
-            // spr.stop();
         } catch ( InterruptedException e ) {
             LOGGER.error(e.getMessage(),e);
         }

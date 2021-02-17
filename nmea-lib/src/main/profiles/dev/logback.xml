@@ -44,13 +44,15 @@
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="tk.schmid" level="error" additivity="false">
+    <logger name="tk.schmid" level="debug" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR_FILE"/>
         <appender-ref ref="FILE"/>
     </logger>
 
     <logger name="org.jnativehook" level="error" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR_FILE"/>
         <appender-ref ref="FILE"/>
     </logger>
 

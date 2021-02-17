@@ -2,7 +2,6 @@ package com.capitanperegrina.nmea.impl.utils;
 
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
 import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters;
-import com.capitanperegrina.nmea.impl.core.serialportreader.listener.SerialPortReaderListener;
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;

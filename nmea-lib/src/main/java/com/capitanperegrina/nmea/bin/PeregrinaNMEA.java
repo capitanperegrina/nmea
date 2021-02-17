@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import tk.schmid.epaper.display.serialcom.EPaperCommunicationException;
 
 /**
  * -i COM3 -x COM9 -o LIST
@@ -15,13 +16,16 @@ public class PeregrinaNMEA {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeregrinaNMEA.class);
 
     public static void main(String[] args) {
-        LOGGER.info("Configuring...");
-        PeregrinaNMEAExcutionParameters params = PeregrinaNMEAUtils.parseParameters(args);
-        ApplicationContext ctx = new AnnotationConfigApplicationContext("com.capitanperegrina");
-        PeregrinaNMEADaemon daemon = ctx.getBean(PeregrinaNMEADaemon.class);
-        LOGGER.info("Starting...");
-        daemon.run(params);
-        LOGGER.info("Stopping...");
-        Runtime.getRuntime().halt(0);
+        try {
+            LOGGER.info("Configuring...");
+            PeregrinaNMEAExcutionParameters params = PeregrinaNMEAUtils.parseParameters(args);
+            ApplicationContext ctx = new AnnotationConfigApplicationContext("com.capitanperegrina");
+            PeregrinaNMEADaemon daemon = ctx.getBean(PeregrinaNMEADaemon.class);
+            LOGGER.info("Starting...");
+            daemon.run(params);
+            LOGGER.info("Stopping...");
+        } finally {
+            Runtime.getRuntime().halt(0);
+        }
     }
 }
