@@ -69,7 +69,7 @@ public class PeregrinaNMEADataBuffer {
         Double vmg = Double.NaN;
         Double dtw = Double.NaN;
 
-        LOGGER.info(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
+        LOGGER.debug(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
 
         if ( waypoint != null && waypoint.isValid() ) {
             dtw = boatPosition.distanceInNauticalMiles( waypoint );
@@ -91,7 +91,7 @@ public class PeregrinaNMEADataBuffer {
         }
 
         // Quick and dirty stuff
-        LOGGER.info(this.toSpeedsString());
+        LOGGER.debug(this.toSpeedsString());
     }
 
     public String toPostionString() {

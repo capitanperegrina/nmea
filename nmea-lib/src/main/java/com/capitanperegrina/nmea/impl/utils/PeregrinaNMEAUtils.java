@@ -87,7 +87,7 @@ public class PeregrinaNMEAUtils {
             FlaggedOption optSeconds = new FlaggedOption("Run time in seconds")
                     .setStringParser(JSAP.INTEGER_PARSER)
                     .setRequired(false)
-                    .setDefault("10")
+                    .setDefault("-1")
                     .setShortFlag('t')
                     .setLongFlag("time");
 

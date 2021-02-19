@@ -37,7 +37,7 @@ public class SerialPortReaderListener implements SerialPortEventListener {
                         String nmea = buffer.toString();
                         if (StringUtils.isNotEmpty(nmea)) {
                             if (PeregrinaNMEAOperations.LIST.toString().equals(this.operation)) {
-                                System.out.println(nmea);
+                                LOGGER.info(nmea);
                             } else if (PeregrinaNMEAOperations.PARSE.toString().equals(this.operation)) {
                                 this.sp.parse(nmea);
                             }
@@ -47,8 +47,8 @@ public class SerialPortReaderListener implements SerialPortEventListener {
                 } else {
                     this.buffer.append(caracter);
                 }
-            } catch (SerialPortException ex) {
-                ex.printStackTrace();
+            } catch (SerialPortException e) {
+                LOGGER.error(e.getMessage(),e);
             }
         } else if (event.isCTS()) {//If CTS line has changed state
             if (event.getEventValue() == 1) {//If line is ON

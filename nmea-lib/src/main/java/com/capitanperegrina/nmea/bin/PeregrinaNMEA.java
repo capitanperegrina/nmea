@@ -24,6 +24,9 @@ public class PeregrinaNMEA {
             LOGGER.info("Starting...");
             daemon.run(params);
             LOGGER.info("Stopping...");
+        } catch ( Throwable e ) {
+            // Catch absolutelly everything because people like me, code shit.
+            LOGGER.error(e.getMessage(), e);
         } finally {
             Runtime.getRuntime().halt(0);
         }

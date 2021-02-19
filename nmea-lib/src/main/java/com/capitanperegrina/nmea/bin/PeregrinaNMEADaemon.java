@@ -52,14 +52,18 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             // Configuring ePaperScreen
             // PeregrinaNMEADisplay.getInstance().configure(params);
 
-            // Configuring ePaperScreen
+            // Configuring data buffer
             PeregrinaNMEADataBuffer.getInstance().setTrackService(this.trackService);
             this.spr.configure(params);
-
             spr.start();
-            LOGGER.info("Started forever.");
-            while (true) {
-                Thread.sleep(Long.MAX_VALUE);
+            if ( params.getSeconds() != -1 ) {
+                LOGGER.info("Started for {} seconds.", params.getSeconds());
+                Thread.sleep(params.getSeconds()*1000);
+            } else {
+                LOGGER.info("Started forever.");
+                while (true) {
+                    Thread.sleep(Long.MAX_VALUE);
+                }
             }
         } catch ( InterruptedException e ) {
             LOGGER.error(e.getMessage(),e);
@@ -68,13 +72,13 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
     private void configureKeyboard() {
         try {
+            LOGGER.debug("If application stops here and you're running on linux, maybe you should ensure exists org/jnativehook/lib/linux/arm/libJNativeHook.so in jnativehook-2.1.0.jar.");
             GlobalScreen.registerNativeHook();
-        }
-        catch (NativeHookException e) {
+            GlobalScreen.addNativeKeyListener(this);
+        } catch (NativeHookException e) {
             LOGGER.error("There was a problem registering the native hook.", e);
-            System.exit(1);
+            throw new RuntimeException(e);
         }
-        GlobalScreen.addNativeKeyListener(this);
     }
 
     // Buggy keyboard listener methods.
