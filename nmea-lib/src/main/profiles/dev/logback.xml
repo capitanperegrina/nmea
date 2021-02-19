@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOG_FILE"       value="C:/Users/Usuario/Documents/desa/nmea/log/nmea.log"/>
-    <property name="ERROR_LOG_FILE" value="C:/Users/Usuario/Documents/desa/nmea/log/error.log"/>
+    <property name="LOG_FILE"       value="C:/Users/Usuario/Documents/desa/nmea/log/nmea"/>
+    <property name="ERROR_LOG_FILE" value="C:/Users/Usuario/Documents/desa/nmea/log/error"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -17,7 +17,7 @@
     </appender>
 
     <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${ERROR_LOG_FILE}</file>
+        <file>${ERROR_LOG_FILE}.log</file>
         <append>true</append>
         <immediateFlush>true</immediateFlush>
         <encoder>
@@ -26,9 +26,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_FILE}</file>
+        <file>${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>4MB</maxFileSize>
             <totalSizeCap>40MB</totalSizeCap>
             <maxHistory>60</maxHistory>
@@ -44,7 +44,7 @@
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="tk.schmid" level="debug" additivity="false">
+    <logger name="tk.schmid" level="error" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ERROR_FILE"/>
         <appender-ref ref="FILE"/>
