@@ -2,7 +2,6 @@ package com.capitanperegrina.nmea.impl.core.serialportreader.listener;
 
 import com.capitanperegrina.nmea.api.model.PeregrinaNMEAOperations;
 import com.capitanperegrina.nmea.impl.core.parsers.SentenceParserHelper;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.SegmentDrawingHelper;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;

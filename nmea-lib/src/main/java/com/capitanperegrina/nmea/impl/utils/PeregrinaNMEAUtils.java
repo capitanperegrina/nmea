@@ -9,6 +9,7 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -31,6 +32,70 @@ public class PeregrinaNMEAUtils {
 
     private PeregrinaNMEAUtils() {
         // Instance creation not allowed as it's a utils class.
+    }
+
+    private static void string2File(String filename, String content) {
+        try {
+            final File outFile = new File(filename);
+            final FileWriter out = new FileWriter(outFile);
+            out.write(content);
+            out.close();
+        } catch (final IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String file2String(String filePath) {
+        final StringBuilder ret = new StringBuilder("");
+        final File file = new File(filePath);
+
+        if (!file.exists()) {
+            LOGGER.warn("File {} does not exist. ", filePath);
+        } else {
+            if (!file.canRead()) {
+                LOGGER.warn("File {} cannot be readed. ", filePath);
+            } else {
+                ret.append(lee(file));
+            }
+        }
+        return ret.toString();
+    }
+
+    private static String lee(File file) {
+        try {
+            final StringBuilder readed = new StringBuilder();
+            final FileReader reader = new FileReader(file);
+            int readedChar = reader.read();
+            while (readedChar >= 0) {
+                final char charCaracter = (char) readedChar;
+                readed.append(charCaracter);
+                readedChar = reader.read();
+            }
+            reader.close();
+            return readed.toString();
+        } catch (final FileNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        } catch (final IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 2021-02-20 12:50:04
+     * @return
+     * @throws IOException
+     */
+    public static String getLastBootTime() throws IOException {
+        LOGGER.trace("getLastBootTime()");
+        Process uptimeProc = Runtime.getRuntime().exec("uptime -S");
+        try ( BufferedReader in = new BufferedReader(new InputStreamReader(uptimeProc.getInputStream())) ) {
+            String ret = in.readLine();
+            LOGGER.info("Last boot time: {} ", ret);
+            return ret;
+        }
     }
 
     public static PeregrinaNMEAExcutionParameters parseParameters(String[] args) {

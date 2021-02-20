@@ -28,7 +28,14 @@ public class TrackServiceImpl implements ITrackService {
     @Override
     @Transactional
     public void savePoint(BoatPosition bp) {
-        this.trackpointDao.add(new TrackPointEntity(0, bp.getDate(), bp.getLatitude(), bp.getLongitude(), null, null));
+        this.trackpointDao.add(
+                new TrackPointEntity(
+                        0,
+                        bp.getDate(),
+                        bp.getLatitude(),
+                        bp.getLongitude(),
+                        bp.getSog() != Double.NaN ? bp.getSog() : null,
+                        bp.getCog() != Double.NaN ? bp.getCog() : null));
     }
 
     @Override

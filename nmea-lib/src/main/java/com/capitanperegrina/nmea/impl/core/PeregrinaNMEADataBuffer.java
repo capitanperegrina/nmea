@@ -3,6 +3,7 @@ package com.capitanperegrina.nmea.impl.core;
 import java.util.LinkedList;
 
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
+import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Line;
 import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
 import com.capitanperegrina.nmea.api.model.service.ITrackService;
@@ -63,6 +64,14 @@ public class PeregrinaNMEADataBuffer {
         this.boatPositionList.add(boatPosition);
         if (this.boatPositionList.size() > DATA_BUFFER_SIZE) {
             this.boatPositionList.removeFirst();
+        }
+
+        // Calculate sog and cog from previous point.
+        Double sog = null;
+        Double cog = null;
+        if (this.boatPositionList.size() > 1) {
+            this.boatPositionList.get(this.boatPositionList.size() - 1).setSog(this.boatPositionList.get(this.boatPositionList.size() - 1).getSog(this.boatPositionList.get(this.boatPositionList.size() - 2)));
+            this.boatPositionList.get(this.boatPositionList.size() - 1).setCog(this.boatPositionList.get(this.boatPositionList.size() - 1).getCog(this.boatPositionList.get(this.boatPositionList.size() - 2)));
         }
 
         // Quick and dirty stuff

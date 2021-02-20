@@ -182,7 +182,6 @@ public class Point extends MapElement {
 		Point point = (Point) o;
 
 		return new EqualsBuilder()
-				.appendSuper(super.equals(o))
 				.append(latitude, point.latitude)
 				.append(longitude, point.longitude)
 				.isEquals();

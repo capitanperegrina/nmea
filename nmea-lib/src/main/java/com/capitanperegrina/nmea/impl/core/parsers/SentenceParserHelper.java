@@ -9,10 +9,12 @@ import net.sf.marineapi.nmea.parser.SentenceFactory;
 import net.sf.marineapi.nmea.sentence.RMCSentence;
 import net.sf.marineapi.nmea.sentence.VTGSentence;
 import net.sf.marineapi.nmea.util.Position;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,15 +38,23 @@ public class SentenceParserHelper {
     }
 
     public void parse(String sentence) {
-        if (sentence.substring(COMAND_START_POSITION_IN_SENTENCE, COMAND_END_POSITION_IN_SENTENCE).equals(VTG)) {
-            parse((VTGSentence) sf.createParser(sentence));
+        LOGGER.debug("Parsing {}", sentence);
+        if (sentence.length()>=COMAND_END_POSITION_IN_SENTENCE) {
+            String code = sentence.substring(COMAND_START_POSITION_IN_SENTENCE, COMAND_END_POSITION_IN_SENTENCE);
+            if (code.equals(VTG)) {
+                parse((VTGSentence) sf.createParser(sentence));
+            }
+            if (code.equals(RMC)) {
+                parse((RMCSentence) sf.createParser(sentence));
+            }
+        } else {
+            LOGGER.warn("Sentence {} not parseable.", sentence);
         }
-        if (sentence.substring(COMAND_START_POSITION_IN_SENTENCE, COMAND_END_POSITION_IN_SENTENCE).equals(RMC)) {
-            parse((RMCSentence) sf.createParser(sentence));
-        }
+
     }
 
     private void parse(VTGSentence vtg) {
+        LOGGER.trace("Parsing VTG" + vtg.toString());
         try {
             VTGBean vtgBean = SentenceToBeanUtils.toBean(vtg);
             PeregrinaNMEADataBuffer.getInstance().addSpeed(vtg.getSpeedKnots());
@@ -59,6 +69,7 @@ public class SentenceParserHelper {
 
     private void parse(RMCSentence rmc) {
         try {
+            LOGGER.trace("Parsing RMC" + rmc.toString());
             Position pos = rmc.getPosition();
             DateTimeFormatter jodaTimeParser = ISODateTimeFormat.dateTimeNoMillis();
             BoatPosition p = new BoatPosition(pos.getLatitude(), pos.getLongitude(), jodaTimeParser.parseDateTime(rmc.getDate().toISO8601(rmc.getTime())).toDate());
