@@ -1,15 +1,16 @@
 package com.capitanperegrina.nmea.impl.core;
 
+import java.text.NumberFormat;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
-import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Line;
 import com.capitanperegrina.nmea.api.model.beans.mapelements.elements.Point;
 import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
 import com.capitanperegrina.nmea.api.model.service.ITrackService;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
-import com.capitanperegrina.nmea.impl.model.impl.TrackPointDaoImpl;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +99,9 @@ public class PeregrinaNMEADataBuffer {
         if (this.boatSpeedList.size() > DATA_BUFFER_SIZE) {
             this.boatSpeedList.removeFirst();
         }
+
+        Double sog = boatSpeedList.stream().filter(value -> value != null || value != Double.NaN).mapToDouble(a -> a).average().orElse(0d);
+        PeregrinaNMEADisplay.getInstance().draw16segments( new Pair<>(155,195), 5, sog);
 
         // Quick and dirty stuff
         LOGGER.debug(this.toSpeedsString());

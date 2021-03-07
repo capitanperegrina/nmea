@@ -15,6 +15,9 @@ public class SixteenSegments {
 
     private static final Map<SixteenSegment, List<SegmentComponent>> segmentPolygons = new HashMap<>();
 
+    public static final Integer DIGIT_ZONE_WIDTH = 35;
+    public static final Integer DIGIT_ZONE_HEIGHT = 46;
+
     static {
         // left top to top middle
         //  * -

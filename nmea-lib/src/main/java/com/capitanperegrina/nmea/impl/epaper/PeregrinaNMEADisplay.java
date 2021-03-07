@@ -4,13 +4,11 @@ import com.capitanperegrina.nmea.api.model.beans.PeregrinaNMEAExcutionParameters
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven.SevenSegmentDrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.SixteenSegmentDrawingHelper;
 import com.capitanperegrina.nmea.impl.model.impl.TrackPointDaoImpl;
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tk.schmid.epaper.display.EPaperDisplay;
 import tk.schmid.epaper.display.serialcom.SerialEPaperDisplay;
-
-
-import org.javatuples.Pair;
 
 public class PeregrinaNMEADisplay {
 
@@ -22,8 +20,8 @@ public class PeregrinaNMEADisplay {
     private SixteenSegmentDrawingHelper sixteenSegmentDrawingHelper;
     private SevenSegmentDrawingHelper sevenSegmentDrawingHelper;
 
-    private PeregrinaNMEADisplay(){
-        if (singleton != null){
+    private PeregrinaNMEADisplay() {
+        if (singleton != null) {
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }
     }
@@ -31,13 +29,15 @@ public class PeregrinaNMEADisplay {
     public static PeregrinaNMEADisplay getInstance() {
         if (singleton == null) {
             synchronized (PeregrinaNMEADisplay.class) {
-                if (singleton == null) singleton = new PeregrinaNMEADisplay();
+                if (singleton == null) {
+                    singleton = new PeregrinaNMEADisplay();
+                }
             }
         }
         return singleton;
     }
 
-    public void configure(PeregrinaNMEAExcutionParameters params) {
+    public void configure(final PeregrinaNMEAExcutionParameters params) {
         if (singleton != null) {
             synchronized (PeregrinaNMEADisplay.class) {
                 this.ePaperDisplay = new SerialEPaperDisplay(params.getScreenSerialPortName());
@@ -60,16 +60,20 @@ public class PeregrinaNMEADisplay {
         return this.ePaperDisplay;
     }
 
-    public Pair<Integer,Integer> draw16segments(Pair<Integer, Integer> startOffset, int scale, String text) {
-        return this.sixteenSegmentDrawingHelper.drawString(startOffset,text,scale);
+    public Pair<Integer, Integer> draw16segments(final Pair<Integer, Integer> startOffset, final int scale, final String text) {
+        return this.sixteenSegmentDrawingHelper.drawString(startOffset, text, scale);
     }
 
-    public Pair<Integer,Integer> draw7segments(Pair<Integer, Integer> startOffset, int scale, String text) {
-        return this.sevenSegmentDrawingHelper.drawString(startOffset,text,scale);
+    public Pair<Integer, Integer> draw16segments(final Pair<Integer, Integer> startOffset, final int scale, final Double d) {
+        return this.sixteenSegmentDrawingHelper.drawDouble(startOffset, d, scale);
+    }
+
+    public Pair<Integer, Integer> draw7segments(final Pair<Integer, Integer> startOffset, final int scale, final String text) {
+        return this.sevenSegmentDrawingHelper.drawString(startOffset, text, scale);
     }
 
     public void clearScreen() {
-        if ( this.ePaperDisplay != null ) {
+        if (this.ePaperDisplay != null) {
             this.ePaperDisplay.clearScreen();
         }
     }
@@ -77,13 +81,13 @@ public class PeregrinaNMEADisplay {
     public void splashScreen() {
         // Show splash image
         this.clearScreen();
-        this.ePaperDisplay.displayImage(0,0, "splashImage.png");
+        this.ePaperDisplay.displayImage(0, 0, "splashImage.png");
         this.ePaperDisplay.repaint();
 
         // Wait 2 seconds.
         try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
+            Thread.sleep(3000);
+        } catch (final InterruptedException e) {
             LOGGER.info(e.getMessage());
         }
 

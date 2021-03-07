@@ -34,8 +34,8 @@ public class TrackServiceImpl implements ITrackService {
                         bp.getDate(),
                         bp.getLatitude(),
                         bp.getLongitude(),
-                        bp.getSog() != Double.NaN ? bp.getSog() : null,
-                        bp.getCog() != Double.NaN ? bp.getCog() : null));
+                        bp.getSog(),
+                        bp.getCog()));
     }
 
     @Override

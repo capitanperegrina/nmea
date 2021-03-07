@@ -50,7 +50,7 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             }
 
             // Configuring ePaperScreen
-            // PeregrinaNMEADisplay.getInstance().configure(params);
+            PeregrinaNMEADisplay.getInstance().configure(params);
 
             // Configuring data buffer
             PeregrinaNMEADataBuffer.getInstance().setTrackService(this.trackService);

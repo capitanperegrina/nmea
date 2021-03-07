@@ -10,6 +10,9 @@ public class SevenSergments {
 
     private static final Map<SevenSegment, List<SegmentComponent>> segmentPolygons = new HashMap<>();
 
+    public static final Integer DIGIT_ZONE_WIDTH = 35;
+    public static final Integer DIGIT_ZONE_HEIGHT = 46;
+
     static {
         //  ***
         // |   |

@@ -29,8 +29,12 @@ public class TrackPointEntity implements Serializable
         this.tsp = tsp;
         this.lat = lat;
         this.lon = lon;
-        this.sog = sog;
-        this.cog = cog;
+        if ( sog != null && Double.NaN != sog ) {
+            this.sog = sog;
+        }
+        if ( cog != null && Double.NaN != cog ) {
+            this.cog = cog;
+        }
     }
 
     public Integer getIdTrackPoint() {
