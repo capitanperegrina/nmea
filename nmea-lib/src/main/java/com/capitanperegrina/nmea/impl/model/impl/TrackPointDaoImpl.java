@@ -13,6 +13,7 @@ import com.capitanperegrina.utils.sql.ResultSetUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Objeto de acceso a datos para la tabla <code>trackpoint<code>
  */
 @Repository
-@Transactional(propagation=Propagation.SUPPORTS)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class TrackPointDaoImpl extends GenericRepository implements ITrackPointDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrackPointDaoImpl.class);
@@ -42,6 +43,7 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
     private JdbcTemplate jdbcTemplate;
 
     private class TrackpointRowMapper implements RowMapper<TrackPointEntity> {
+
         @Override
         public TrackPointEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
             TrackPointEntity obj = new TrackPointEntity();
@@ -55,22 +57,22 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
         }
     }
 
-    private static Object[] toParamsAll( TrackPointEntity obj ) {
-        return ArrayUtils.addAll( toParamsKey( obj ) , toParamsRest( obj ) );
+    private static Object[] toParamsAll(TrackPointEntity obj) {
+        return ArrayUtils.addAll(toParamsKey(obj), toParamsRest(obj));
     }
 
-    private static Object[] toParamsUpdate( TrackPointEntity obj ) {
-        return ArrayUtils.addAll( toParamsRest( obj ), toParamsKey( obj ) );
+    private static Object[] toParamsUpdate(TrackPointEntity obj) {
+        return ArrayUtils.addAll(toParamsRest(obj), toParamsKey(obj));
     }
 
-    private static Object[] toParamsKey( TrackPointEntity obj ) {
-        return new Object[] {
+    private static Object[] toParamsKey(TrackPointEntity obj) {
+        return new Object[]{
             obj.getIdTrackPoint()
-         };
+        };
     }
 
-    private static Object[] toParamsRest( TrackPointEntity obj ) {
-        return new Object[] {
+    private static Object[] toParamsRest(TrackPointEntity obj) {
+        return new Object[]{
             obj.getTsp(),
             obj.getLat(),
             obj.getLon(),
@@ -118,24 +120,24 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
 
     @Override
     public void update(TrackPointEntity obj) {
-		StringBuilder q = new StringBuilder();
-		Object[] p = toParamsUpdate(obj);
-		q.append(generateUpdateQuery());
-		if (LOGGER.isTraceEnabled()) {
-		    LOGGER.trace(QueryUtils.queryLog(q, p));
-		}
-		this.jdbcTemplate.update(q.toString(), p);
+        StringBuilder q = new StringBuilder();
+        Object[] p = toParamsUpdate(obj);
+        q.append(generateUpdateQuery());
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace(QueryUtils.queryLog(q, p));
+        }
+        this.jdbcTemplate.update(q.toString(), p);
     }
 
     @Override
     public void delete(TrackPointEntity obj) {
         StringBuilder q = new StringBuilder();
-		Object[] p = toParamsKey(obj);
-		q.append(generateDeleteQuery());
-		if (LOGGER.isTraceEnabled()) {
-		    LOGGER.trace(QueryUtils.queryLog(q, p));
-		}
-		this.jdbcTemplate.update(q.toString(), p);
+        Object[] p = toParamsKey(obj);
+        q.append(generateDeleteQuery());
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace(QueryUtils.queryLog(q, p));
+        }
+        this.jdbcTemplate.update(q.toString(), p);
     }
 
     private List<TrackPointEntity> searchAll() {
@@ -150,41 +152,41 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
 
     @Override
     public List<TrackPointEntity> find(TrackPointEntity obj) {
-        if ( obj == null ) {
+        if (obj == null) {
             return searchAll();
         }
 
         StringBuilder cond = new StringBuilder(" 1=1 ");
         List<Object> parametros = new ArrayList<>();
 
-        if ( obj.getIdTrackPoint() != null ) {
-            cond.append( "   AND id_track_point = ? " );
-            parametros.add( obj.getIdTrackPoint() );
+        if (obj.getIdTrackPoint() != null) {
+            cond.append("   AND id_track_point = ? ");
+            parametros.add(obj.getIdTrackPoint());
         }
-        if ( obj.getTsp() != null ) {
-            cond.append( "   AND tsp = ? " );
-            parametros.add( obj.getTsp() );
+        if (obj.getTsp() != null) {
+            cond.append("   AND tsp = ? ");
+            parametros.add(obj.getTsp());
         }
-        if ( obj.getLat() != null ) {
-            cond.append( "   AND lat = ? " );
-            parametros.add( obj.getLat() );
+        if (obj.getLat() != null) {
+            cond.append("   AND lat = ? ");
+            parametros.add(obj.getLat());
         }
-        if ( obj.getLon() != null ) {
-            cond.append( "   AND lon = ? " );
-            parametros.add( obj.getLon() );
+        if (obj.getLon() != null) {
+            cond.append("   AND lon = ? ");
+            parametros.add(obj.getLon());
         }
-        if ( obj.getSog() != null ) {
-            cond.append( "   AND sog = ? " );
-            parametros.add( obj.getSog() );
+        if (obj.getSog() != null) {
+            cond.append("   AND sog = ? ");
+            parametros.add(obj.getSog());
         }
-        if ( obj.getCog() != null ) {
-            cond.append( "   AND cog = ? " );
-            parametros.add( obj.getCog() );
+        if (obj.getCog() != null) {
+            cond.append("   AND cog = ? ");
+            parametros.add(obj.getCog());
         }
 
         Object[] p = parametros.toArray();
         StringBuilder q = new StringBuilder();
-        q.append(generateSelectQuery( cond.toString() ));
+        q.append(generateSelectQuery(cond.toString()));
         if (LOGGER.isTraceEnabled()) {
             LOGGER.trace(QueryUtils.queryLog(q, p));
         }
@@ -193,7 +195,7 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
 
     public void emptyTable() {
         StringBuilder q = new StringBuilder();
-        Object[] p = new Object[] {};
+        Object[] p = new Object[]{};
         q.append("TRUNCATE TABLE " + TABLE);
         if (LOGGER.isTraceEnabled()) {
             LOGGER.trace(QueryUtils.queryLog(q, p));
@@ -223,6 +225,6 @@ public class TrackPointDaoImpl extends GenericRepository implements ITrackPointD
 
     @Override
     protected String getFieldsUpdate() {
-       return FIELDS_UPDATE;
+        return FIELDS_UPDATE;
     }
 }
