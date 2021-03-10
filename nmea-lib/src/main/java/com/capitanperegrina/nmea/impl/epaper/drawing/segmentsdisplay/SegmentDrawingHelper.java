@@ -22,6 +22,7 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
     private static final String NOT_PROPPERLY_DECLARED_COMPONENT = "Not propperly declared component: {}";
 
     private final DecimalFormat decimalFormatter;
+    private final DecimalFormat integerFormatter;
     private final DecimalFormatSymbols doubleFormatterSymbols;
 
     public SegmentDrawingHelper(final EPaperDisplay screen) {
@@ -29,7 +30,13 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
         this.decimalFormatter = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.getDefault());
         this.decimalFormatter.setMinimumFractionDigits(2);
         this.decimalFormatter.setMaximumFractionDigits(2);
+
         this.doubleFormatterSymbols = this.decimalFormatter.getDecimalFormatSymbols();
+
+        this.integerFormatter = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.getDefault());
+        this.integerFormatter.setMinimumFractionDigits(0);
+        this.integerFormatter.setMaximumFractionDigits(0);
+        this.integerFormatter.setMinimumIntegerDigits(3);
     }
 
     public abstract void clearCharacter(final Pair<Integer, Integer> offsetStart, int scale);
@@ -53,6 +60,14 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
             }
         }
         return ret;
+    }
+
+    public Pair<Integer, Integer> drawInteger(final Pair<Integer, Integer> offsetStart, final Integer i, final int scale) {
+        final Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
+        if (i != null) {
+            return this.drawString(offsetStart, this.integerFormatter.format(i), scale);
+        }
+        return this.drawString(offsetStart, "-" + this.doubleFormatterSymbols.getDecimalSeparator() + "--", 5);
     }
 
     public Pair<Integer, Integer> drawDouble(final Pair<Integer, Integer> offsetStart, final Double d, final int scale) {

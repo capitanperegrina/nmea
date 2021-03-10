@@ -6,7 +6,6 @@ import com.capitanperegrina.nmea.api.model.naming.WaypointsNaming;
 import com.capitanperegrina.nmea.api.model.service.ITrackService;
 import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.capitanperegrina.nmea.impl.utils.PeregrinaNMEAUtils;
-import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,10 +67,8 @@ public class PeregrinaNMEADataBuffer {
         }
 
         // Calculate sog and cog from previous point.
-        final Double sog = null;
-        final Double cog = null;
         if (this.boatPositionList.size() > 1) {
-            this.boatPositionList.get(this.boatPositionList.size() - 1).setSog(this.boatPositionList.get(this.boatPositionList.size() - 1).getSog(this.boatPositionList.get(this.boatPositionList.size() - 2)));
+            this.boatPositionList.get(this.boatPositionList.size() - 1).setSog(Math.abs(this.boatPositionList.get(this.boatPositionList.size() - 1).getSog(this.boatPositionList.get(this.boatPositionList.size() - 2))));
             this.boatPositionList.get(this.boatPositionList.size() - 1).setCog(this.boatPositionList.get(this.boatPositionList.size() - 1).getCog(this.boatPositionList.get(this.boatPositionList.size() - 2)));
         }
 
@@ -84,28 +81,31 @@ public class PeregrinaNMEADataBuffer {
         if (this.waypoint != null && this.waypoint.isValid()) {
             dtw = boatPosition.distanceInNauticalMiles(this.waypoint);
             if (this.boatPositionList.size() > 1) {
-                vmg = boatPosition.distanceInNauticalMiles(this.boatPositionList.get(this.boatPositionList.size() - 2))
+                vmg = Math.abs(boatPosition.distanceInNauticalMiles(this.boatPositionList.get(this.boatPositionList.size() - 2))
                         /
-                        boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
+                        boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate()));
             }
             LOGGER.info("Waypoint: {}    DTW = {} Nm.    VMC = {} Kn.", this.waypoint.toString(), PeregrinaNMEAUtils.speedFormat(dtw), PeregrinaNMEAUtils.speedFormat(vmg));
+            PeregrinaNMEADisplay.getInstance().toWayPointScreen(boatPosition, this.waypoint, dtw, vmg);
+        } else {
+            PeregrinaNMEADisplay.getInstance().noWayPointScreen(boatPosition);
         }
+        PeregrinaNMEADisplay.getInstance().repaint();
         this.trackService.savePoint(boatPosition);
     }
 
-    public void addSpeed(final Double speed) {
-        // Making space if full
-        this.boatSpeedList.add(speed);
-        if (this.boatSpeedList.size() > DATA_BUFFER_SIZE) {
-            this.boatSpeedList.removeFirst();
-        }
-
-        final Double sog = this.boatSpeedList.stream().filter(value -> value != null || value != Double.NaN).mapToDouble(a -> a).average().orElse(0d);
-        PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(155, 195), 5, sog);
-
-        // Quick and dirty stuff
-        LOGGER.debug(this.toSpeedsString());
-    }
+//    public void addSpeed(final Double speed) {
+//        // Making space if full
+//        this.boatSpeedList.add(speed);
+//        if (this.boatSpeedList.size() > DATA_BUFFER_SIZE) {
+//            this.boatSpeedList.removeFirst();
+//        }
+//
+//        final Double sog = this.boatSpeedList.stream().filter(value -> value != null || value != Double.NaN).mapToDouble(a -> a).average().orElse(0d);
+//
+//        // Quick and dirty stuff
+//        LOGGER.debug(this.toSpeedsString());
+//    }
 
     public String toPostionString() {
         final StringBuilder sb = new StringBuilder();
