@@ -45,13 +45,14 @@ public class PeregrinaNMEADisplay {
                 this.sevenSegmentDrawingHelper = new SevenSegmentDrawingHelper(this.ePaperDisplay);
                 this.ePaperDisplay.connect();
                 LOGGER.info("Connected...");
-                LOGGER.info("Active storage: " + this.ePaperDisplay.getActiveStorage());
-                LOGGER.info("Display Direction: " + this.ePaperDisplay.getDisplayDirection());
-                LOGGER.info("English Font Size: " + this.ePaperDisplay.getEnglishFontSize());
-                LOGGER.info("Chinese Font Size " + this.ePaperDisplay.getChineseFontSize());
-                LOGGER.info("Drawing Color: " + this.ePaperDisplay.getDrawingColor());
-                LOGGER.info("Background Color: " + this.ePaperDisplay.getBackgroundColor());
-                LOGGER.info("Baud Rate: " + this.ePaperDisplay.getBaudRate());
+                this.clearAndRepaintScreen();
+                // LOGGER.info("Active storage: " + this.ePaperDisplay.getActiveStorage());
+                // LOGGER.info("Display Direction: " + this.ePaperDisplay.getDisplayDirection());
+                // LOGGER.info("English Font Size: " + this.ePaperDisplay.getEnglishFontSize());
+                // LOGGER.info("Chinese Font Size " + this.ePaperDisplay.getChineseFontSize());
+                // LOGGER.info("Drawing Color: " + this.ePaperDisplay.getDrawingColor());
+                // LOGGER.info("Background Color: " + this.ePaperDisplay.getBackgroundColor());
+                // LOGGER.info("Baud Rate: " + this.ePaperDisplay.getBaudRate());
             }
         }
     }
@@ -72,16 +73,27 @@ public class PeregrinaNMEADisplay {
         return this.sevenSegmentDrawingHelper.drawString(startOffset, text, scale);
     }
 
+    public Pair<Integer, Integer> draw7segments(final Pair<Integer, Integer> startOffset, final int scale, final Double d) {
+        return this.sevenSegmentDrawingHelper.drawDouble(startOffset, d, scale);
+    }
+
     public void clearScreen() {
         if (this.ePaperDisplay != null) {
             this.ePaperDisplay.clearScreen();
         }
     }
 
+    public void clearAndRepaintScreen() {
+        if (this.ePaperDisplay != null) {
+            this.ePaperDisplay.clearScreen();
+            this.ePaperDisplay.repaint();
+        }
+    }
+
     public void splashScreen() {
         // Show splash image
         this.clearScreen();
-        this.ePaperDisplay.displayImage(0, 0, "splashImage.png");
+        this.ePaperDisplay.displayImage(400, 300, "SPLASH.BMP");
         this.ePaperDisplay.repaint();
 
         // Wait 2 seconds.

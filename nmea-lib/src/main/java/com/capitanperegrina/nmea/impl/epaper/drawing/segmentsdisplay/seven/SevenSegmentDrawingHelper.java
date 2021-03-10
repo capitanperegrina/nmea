@@ -1,50 +1,55 @@
 package com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven;
 
-import java.util.*;
-
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.SegmentDrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.components.SegmentComponent;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SegmentsNaming;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SpecialCharsAlphabet;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven.segments.SevenSegment;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven.segments.SevenSergments;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.SixteenSegmentAlfabet;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.segments.SixteenSegments;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.segments.SpecialCharsAlphabet;
 import org.javatuples.Pair;
 import tk.schmid.epaper.display.EPaperDisplay;
 import tk.schmid.epaper.display.protocol.DisplayColor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SevenSegmentDrawingHelper extends SegmentDrawingHelper {
 
-    public SevenSegmentDrawingHelper(EPaperDisplay screen) {
+    public SevenSegmentDrawingHelper(final EPaperDisplay screen) {
         super(screen);
     }
 
-    private List<Integer> specialToSegments(SpecialCharsAlphabet specialChar) {
-        if (specialChar == SpecialCharsAlphabet.COMMA) {
-            return Arrays.asList(SixteenSegmentAlfabet.valueOf(",").getSegments());
+    private List<Integer> specialToSegments(final SpecialCharsAlphabet specialChar) {
+        if (specialChar == null) {
+            return new ArrayList();
         }
-        return Arrays.asList(SixteenSegmentAlfabet.valueOf(".").getSegments());
+        if (specialChar == SpecialCharsAlphabet.COMMA) {
+            return SevenSegmentsAlphabet.getSegments(',');
+        }
+        return SevenSegmentsAlphabet.getSegments('.');
     }
 
-    public Pair<Integer, Integer> drawCharacter(Pair<Integer, Integer> offsetStart, char character, SpecialCharsAlphabet specialChar, int scale) {
-        List<Integer> segments = SevenSegmentsAlphabet.getSegments(character);
-        segments.addAll(specialToSegments(specialChar));
-        return doDrawCharacter(offsetStart, segments, scale);
+    @Override
+    public Pair<Integer, Integer> drawCharacter(final Pair<Integer, Integer> offsetStart, final char character, final SpecialCharsAlphabet specialChar, final int scale) {
+        final List<Integer> segments = new ArrayList<>();
+        segments.addAll(SevenSegmentsAlphabet.getSegments(character));
+        segments.addAll(this.specialToSegments(specialChar));
+        return this.doDrawCharacter(offsetStart, segments, scale);
     }
 
-    private Pair<Integer, Integer> doDrawCharacter(Pair<Integer, Integer> offsetStart, List<Integer> segments, int scale) {
-        List<SegmentComponent> characterSegmentComponents = new ArrayList<>();
-        for (Integer idSegment : segments) {
-            characterSegmentComponents.addAll(SevenSergments.getComponents(SevenSegment.valueOf(idSegment.toString())));
+    private Pair<Integer, Integer> doDrawCharacter(final Pair<Integer, Integer> offsetStart, final List<Integer> segments, final int scale) {
+        final List<SegmentComponent> characterSegmentComponents = new ArrayList<>();
+        for (final Integer idSegment : segments) {
+            characterSegmentComponents.addAll(SevenSergments.getComponents(SevenSegment.getSevemSegmentSegment(idSegment)));
         }
         this.drawComponents(offsetStart, characterSegmentComponents, scale);
-        return new Pair<>(offsetStart.getValue0() + SegmentsNaming.SEGMENT_CHAR_WIDTH * scale, offsetStart.getValue1() + SegmentsNaming.SEGMENT_CHAR_HEIGHT * scale);
+        return new Pair<>(offsetStart.getValue0() + SegmentsNaming.SEGMENT_CHAR_WIDTH * scale, offsetStart.getValue1());
     }
 
-    public void clearZoneForDigit(Pair<Integer, Integer> offsetStart, int scale) {
+    @Override
+    public void clearZoneForDigit(final Pair<Integer, Integer> offsetStart, final int scale) {
         this.screen.setColor(DisplayColor.White, DisplayColor.White);
-        clearZone(offsetStart, new Pair<>(offsetStart.getValue0() + SevenSergments.DIGIT_ZONE_WIDTH * scale, offsetStart.getValue0() + SevenSergments.DIGIT_ZONE_HEIGHT * scale));
+        this.clearZone(offsetStart, new Pair<>(offsetStart.getValue0() + SevenSergments.DIGIT_ZONE_WIDTH * scale, offsetStart.getValue0() + SevenSergments.DIGIT_ZONE_HEIGHT * scale));
         this.screen.setColor(DisplayColor.Black, DisplayColor.White);
     }
 }

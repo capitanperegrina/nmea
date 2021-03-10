@@ -20,9 +20,9 @@ public class SevenSergments {
         // |   |
         //  ---
         segmentPolygons.put(SevenSegment.SEGMENT_1, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_1).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(2,2), new Pair<>(3,1), new Pair<>(3,3)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_1).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(3,1), new Pair<>(27,3)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_2).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(27,1), new Pair<>(28,2), new Pair<>(27,3)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_1).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(2, 2), new Pair<>(3, 1), new Pair<>(3, 3)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_1).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(3, 1), new Pair<>(27, 3)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_1).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 1), new Pair<>(28, 2), new Pair<>(27, 3)})));
 
         //  ---
         // *   |
@@ -30,9 +30,9 @@ public class SevenSergments {
         // |   |
         //  ---
         segmentPolygons.put(SevenSegment.SEGMENT_2, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_2).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(2,2), new Pair<>(3,3), new Pair<>(1,3)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_2).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(1,3), new Pair<>(3,22)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_2).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(3,22), new Pair<>(2,23), new Pair<>(1,22)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_2).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(2, 2), new Pair<>(3, 3), new Pair<>(1, 3)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_2).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(1, 3), new Pair<>(3, 22)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_2).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(3, 22), new Pair<>(2, 23), new Pair<>(1, 22)})));
 
         //  ---
         // |   *
@@ -40,9 +40,9 @@ public class SevenSergments {
         // |   |
         //  ---
         segmentPolygons.put(SevenSegment.SEGMENT_3, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_3).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(28,2), new Pair<>(29,3), new Pair<>(27,3)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_3).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(29,3), new Pair<>(27,22)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_3).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(3,22), new Pair<>(2,23), new Pair<>(1,22)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_3).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(28, 2), new Pair<>(29, 3), new Pair<>(27, 3)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_3).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(29, 3), new Pair<>(27, 22)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_3).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 22), new Pair<>(28, 23), new Pair<>(29, 22)})));
 
         //  ---
         // |   |
@@ -50,9 +50,9 @@ public class SevenSergments {
         // |   |
         //  ---
         segmentPolygons.put(SevenSegment.SEGMENT_4, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_4).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(2,23), new Pair<>(3,22), new Pair<>(3,24)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_4).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(3,22), new Pair<>(27,24)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_4).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(27,22), new Pair<>(28,23), new Pair<>(27,24)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_4).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(2, 23), new Pair<>(3, 22), new Pair<>(3, 24)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_4).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(3, 22), new Pair<>(27, 24)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_4).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 22), new Pair<>(28, 23), new Pair<>(27, 24)})));
 
         //  ---
         // |   |
@@ -60,9 +60,9 @@ public class SevenSergments {
         // *   |
         //  ---
         segmentPolygons.put(SevenSegment.SEGMENT_5, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_5).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(2,23), new Pair<>(3,24), new Pair<>(1,24)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_5).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(1,24), new Pair<>(3,43)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_5).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(3,43), new Pair<>(2,44), new Pair<>(1,43)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_5).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(2, 23), new Pair<>(3, 24), new Pair<>(1, 24)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_5).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(1, 24), new Pair<>(3, 43)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_5).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(3, 43), new Pair<>(2, 44), new Pair<>(1, 43)})));
 
         //  ---
         // |   |
@@ -70,9 +70,9 @@ public class SevenSergments {
         // |   *
         //  ---
         segmentPolygons.put(SevenSegment.SEGMENT_6, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_6).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(27,24), new Pair<>(28,23), new Pair<>(29,24)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_6).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(27,24), new Pair<>(29,43)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_6).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(27,43), new Pair<>(28,44), new Pair<>(29,43)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_6).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 24), new Pair<>(28, 23), new Pair<>(29, 24)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_6).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 24), new Pair<>(29, 43)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_6).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 43), new Pair<>(28, 44), new Pair<>(29, 43)})));
 
         //  ---
         // |   |
@@ -80,9 +80,9 @@ public class SevenSergments {
         // |   |
         //  ***
         segmentPolygons.put(SevenSegment.SEGMENT_7, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_7).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(2,44), new Pair<>(3,43), new Pair<>(3,45)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_7).add( new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[] {new Pair<>(3,43), new Pair<>(27,45)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_7).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(27,43), new Pair<>(28,44), new Pair<>(27,45)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_7).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(2, 44), new Pair<>(3, 43), new Pair<>(3, 45)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_7).add(new SegmentComponent(PolygonType.RECTANGLE, Arrays.asList(new Pair[]{new Pair<>(3, 43), new Pair<>(27, 45)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_7).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(27, 43), new Pair<>(28, 44), new Pair<>(27, 45)})));
 
         // dot
         //  ---
@@ -91,7 +91,7 @@ public class SevenSergments {
         // |   |
         //  ---  .
         segmentPolygons.put(SevenSegment.SEGMENT_DOT, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_DOT).add( new SegmentComponent(PolygonType.CIRCLE, Arrays.asList(new Pair[] {new Pair<>(30,42), new Pair<>(1,null)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_DOT).add(new SegmentComponent(PolygonType.CIRCLE, Arrays.asList(new Pair[]{new Pair<>(31, 42), new Pair<>(1, null)})));
 
         // comma
         //  ---
@@ -100,15 +100,15 @@ public class SevenSergments {
         // |   |
         //  ---  ,
         segmentPolygons.put(SevenSegment.SEGMENT_COMMA, new ArrayList<>());
-        segmentPolygons.get(SevenSegment.SEGMENT_COMMA).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(30,43), new Pair<>(31,43), new Pair<>(30,45)})));
-        segmentPolygons.get(SevenSegment.SEGMENT_COMMA).add( new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[] {new Pair<>(30,43), new Pair<>(29,45), new Pair<>(30,45)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_COMMA).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(31, 43), new Pair<>(32, 43), new Pair<>(31, 45)})));
+        segmentPolygons.get(SevenSegment.SEGMENT_COMMA).add(new SegmentComponent(PolygonType.TRIANGLE, Arrays.asList(new Pair[]{new Pair<>(31, 43), new Pair<>(30, 45), new Pair<>(31, 45)})));
     }
 
     private SevenSergments() {
         // Instance creation not allowed as it's a static class
     }
 
-    public static List<SegmentComponent> getComponents(SevenSegment segment) {
+    public static List<SegmentComponent> getComponents(final SevenSegment segment) {
         return segmentPolygons.get(segment);
     }
 }

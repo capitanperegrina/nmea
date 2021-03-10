@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOG_FILE"       value="C:/Users/Usuario/Documents/desa/nmea/log/nmea"/>
+    <property name="LOG_FILE" value="C:/Users/Usuario/Documents/desa/nmea/log/nmea"/>
     <property name="ERROR_LOG_FILE" value="C:/Users/Usuario/Documents/desa/nmea/log/error"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -49,6 +49,11 @@
         <appender-ref ref="ERROR_FILE"/>
         <appender-ref ref="FILE"/>
     </logger>
+
+    <!--    <logger name="jssc" level="error" additivity="false">-->
+    <!--        <appender-ref ref="CONSOLE"/>-->
+    <!--        <appender-ref ref="FILE"/>-->
+    <!--    </logger>-->
 
     <logger name="org.jnativehook" level="error" additivity="false">
         <appender-ref ref="STDOUT"/>

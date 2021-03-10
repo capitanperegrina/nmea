@@ -8,17 +8,25 @@ public enum SevenSegment {
     SEGMENT_5(5), // left bottom
     SEGMENT_6(6), // right bottom
     SEGMENT_7(7), // bottom
-    SEGMENT_DOT(17), // dot
-    SEGMENT_COMMA(18); // comma
+    SEGMENT_DOT(8), // dot
+    SEGMENT_COMMA(9); // comma
 
     private final int value;
 
     SevenSegment(final int newValue) {
-        value = newValue;
+        this.value = newValue;
     }
 
     public int getValue() {
-        return value;
+        return this.value;
     }
 
+    public static SevenSegment getSevemSegmentSegment(final int i) {
+        for (final SevenSegment ss : SevenSegment.values()) {
+            if (ss.getValue() == i) {
+                return ss;
+            }
+        }
+        return null;
+    }
 }

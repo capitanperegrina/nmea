@@ -24,10 +24,19 @@ public enum SixteenSegment {
     private final int value;
 
     SixteenSegment(final int newValue) {
-        value = newValue;
+        this.value = newValue;
     }
 
     public int getValue() {
-        return value;
+        return this.value;
+    }
+
+    public static SixteenSegment getSixteenSegment(final int i) {
+        for (final SixteenSegment ss : SixteenSegment.values()) {
+            if (ss.getValue() == i) {
+                return ss;
+            }
+        }
+        return null;
     }
 }

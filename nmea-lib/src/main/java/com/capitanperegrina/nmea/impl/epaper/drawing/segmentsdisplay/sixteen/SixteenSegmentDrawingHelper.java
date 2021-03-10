@@ -3,9 +3,9 @@ package com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.SegmentDrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.components.SegmentComponent;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SegmentsNaming;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SpecialCharsAlphabet;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.segments.SixteenSegment;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.segments.SixteenSegments;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.segments.SpecialCharsAlphabet;
 import org.javatuples.Pair;
 import tk.schmid.epaper.display.EPaperDisplay;
 import tk.schmid.epaper.display.protocol.DisplayColor;
@@ -22,17 +22,18 @@ public class SixteenSegmentDrawingHelper extends SegmentDrawingHelper {
 
     private List<Integer> specialToSegments(final SpecialCharsAlphabet specialChar) {
         if (specialChar == null) {
-            return new ArrayList<>();
+            return new ArrayList();
         }
         if (specialChar == SpecialCharsAlphabet.COMMA) {
-            return Arrays.asList(SixteenSegmentAlfabet.valueOf(",").getSegments());
+            return Arrays.asList(SixteenSegmentAlfabet.getSegments(SpecialCharsAlphabet.COMMA.asChar()));
         }
-        return Arrays.asList(SixteenSegmentAlfabet.valueOf(".").getSegments());
+        return Arrays.asList(SixteenSegmentAlfabet.getSegments(SpecialCharsAlphabet.DOT.asChar()));
     }
 
     @Override
     public Pair<Integer, Integer> drawCharacter(final Pair<Integer, Integer> offsetStart, final char character, final SpecialCharsAlphabet specialChar, final int scale) {
-        final List<Integer> segments = Arrays.asList(SixteenSegmentAlfabet.valueOf("" + character).getSegments());
+        final List<Integer> segments = new ArrayList<>();
+        segments.addAll(Arrays.asList(SixteenSegmentAlfabet.getSegments(character)));
         segments.addAll(this.specialToSegments(specialChar));
         return this.doDrawCharacter(offsetStart, segments, scale);
     }
@@ -40,10 +41,10 @@ public class SixteenSegmentDrawingHelper extends SegmentDrawingHelper {
     public Pair<Integer, Integer> doDrawCharacter(final Pair<Integer, Integer> offsetStart, final List<Integer> segments, final int scale) {
         final List<SegmentComponent> characterSegmentComponents = new ArrayList<>();
         for (final Integer idSegment : segments) {
-            characterSegmentComponents.addAll(SixteenSegments.getComponents(SixteenSegment.valueOf(idSegment.toString())));
+            characterSegmentComponents.addAll(SixteenSegments.getComponents(SixteenSegment.getSixteenSegment(idSegment)));
         }
         this.drawComponents(offsetStart, characterSegmentComponents, scale);
-        return new Pair<>(offsetStart.getValue0() + SegmentsNaming.SEGMENT_CHAR_WIDTH * scale, offsetStart.getValue1() + SegmentsNaming.SEGMENT_CHAR_HEIGHT * scale);
+        return new Pair<>(offsetStart.getValue0() + SegmentsNaming.SEGMENT_CHAR_WIDTH * scale, offsetStart.getValue1());
     }
 
     @Override

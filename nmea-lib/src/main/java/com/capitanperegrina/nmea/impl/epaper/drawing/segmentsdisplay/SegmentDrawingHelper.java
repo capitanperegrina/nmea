@@ -3,7 +3,7 @@ package com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay;
 import com.capitanperegrina.nmea.impl.epaper.drawing.DrawingHelper;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.components.SegmentComponent;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SegmentsNaming;
-import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.segments.SpecialCharsAlphabet;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SpecialCharsAlphabet;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.javatuples.Pair;
@@ -34,26 +34,29 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
 
     @Override
     public Pair<Integer, Integer> drawString(final Pair<Integer, Integer> offsetStart, final String text, final int scale) {
-        final Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
+        this.screen.clearScreen();
+        Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
         if (StringUtils.isNotEmpty(text)) {
-            for (int i = 0; i < text.length(); i++) {
+            int i = 0;
+            while (i < text.length()) {
+                final char charToPaint = text.charAt(i);
                 // This is a nasty trick to use dot or comma segments.
                 SpecialCharsAlphabet specialChar = null;
                 if (i + 1 < text.length() && text.charAt(i + 1) == this.doubleFormatterSymbols.getDecimalSeparator()) {
-                    specialChar = SpecialCharsAlphabet.valueOf(this.doubleFormatterSymbols.getDecimalSeparator() + "");
+                    specialChar = SpecialCharsAlphabet.getSpecialChar(this.doubleFormatterSymbols.getDecimalSeparator());
                     i++;
                 }
-                final Pair<Integer, Integer> charNewOffset = this.drawCharacter(offsetStart, text.charAt(i), specialChar, scale);
-                ret.setAt0(ret.getValue0() + charNewOffset.getValue0());
-                ret.setAt1(charNewOffset.getValue1());
+                ret = this.drawCharacter(ret, charToPaint, specialChar, scale);
+                i++;
             }
+            this.screen.repaint();
         }
         return ret;
     }
 
     public Pair<Integer, Integer> drawDouble(final Pair<Integer, Integer> offsetStart, final Double d, final int scale) {
         final Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
-        if (d != null && d != Double.NaN) {
+        if (d != null && !d.equals(Double.NaN)) {
             return this.drawString(offsetStart, this.decimalFormatter.format(d), scale);
         }
         return this.drawString(offsetStart, "-" + this.doubleFormatterSymbols.getDecimalSeparator() + "--", 5);
@@ -70,7 +73,7 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
     }
 
     private void drawComponent(final Pair<Integer, Integer> offsetStart, final SegmentComponent segmentComponent, final int scale) {
-        this.clearZoneForDigit(offsetStart, scale);
+        // this.clearZoneForDigit(offsetStart, scale);
         switch (segmentComponent.getPolygonType()) {
             case TRIANGLE:
                 if (CollectionUtils.isNotEmpty(segmentComponent.getListaCoordenadas()) && segmentComponent.getListaCoordenadas().size() == 3) {
