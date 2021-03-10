@@ -32,9 +32,10 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
         this.doubleFormatterSymbols = this.decimalFormatter.getDecimalFormatSymbols();
     }
 
+    public abstract void clearCharacter(final Pair<Integer, Integer> offsetStart, int scale);
+
     @Override
     public Pair<Integer, Integer> drawString(final Pair<Integer, Integer> offsetStart, final String text, final int scale) {
-        this.screen.clearScreen();
         Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
         if (StringUtils.isNotEmpty(text)) {
             int i = 0;
@@ -46,10 +47,10 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
                     specialChar = SpecialCharsAlphabet.getSpecialChar(this.doubleFormatterSymbols.getDecimalSeparator());
                     i++;
                 }
+                this.clearCharacter(ret, scale);
                 ret = this.drawCharacter(ret, charToPaint, specialChar, scale);
                 i++;
             }
-            this.screen.repaint();
         }
         return ret;
     }

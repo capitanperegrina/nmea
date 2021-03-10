@@ -18,20 +18,44 @@ public class EPaper43Test {
             final PeregrinaNMEAExcutionParameters params = PeregrinaNMEAUtils.parseParameters(args);
             PeregrinaNMEADisplay.getInstance().configure(params);
 
+            PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(155, 195), 5, Double.valueOf(0.12d));
+            PeregrinaNMEADisplay.getInstance().repaint();
+
+            // PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(155, 195), 5, Double.valueOf(3.45d));
+            PeregrinaNMEADisplay.getInstance().repaint();
+
+            // PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(155, 195), 5, Double.valueOf(6.78d));
+            PeregrinaNMEADisplay.getInstance().repaint();
+
+            // PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(155, 195), 5, Double.valueOf(9.00d));
+            PeregrinaNMEADisplay.getInstance().repaint();
 
-            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 195), 3, "abcdefgh");
-            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 195), 3, "ijklmnño");
-            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 195), 3, "pqrstuvw");
-            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 195), 3, "xyz*#\"-,.");
+            PeregrinaNMEADisplay.getInstance().clearAndRepaintScreen();
+            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 0), 3, "abcdefgh");
+            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 140), 3, "ijklmnño");
+            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 280), 3, "pqrstuvw");
+            PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(10, 420), 3, "xyz*#\"-,.");
+            PeregrinaNMEADisplay.getInstance().repaint();
 
+            PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw7segments(new Pair<>(155, 195), 5, Double.valueOf(0.12d));
+            PeregrinaNMEADisplay.getInstance().repaint();
+
+            PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw7segments(new Pair<>(155, 195), 5, Double.valueOf(3.45d));
+            PeregrinaNMEADisplay.getInstance().repaint();
+
+            PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw7segments(new Pair<>(155, 195), 5, Double.valueOf(6.78d));
+            PeregrinaNMEADisplay.getInstance().repaint();
+
+            PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().draw7segments(new Pair<>(155, 195), 5, Double.valueOf(9.00d));
+            PeregrinaNMEADisplay.getInstance().repaint();
 
             PeregrinaNMEADisplay.getInstance().clearAndRepaintScreen();
 

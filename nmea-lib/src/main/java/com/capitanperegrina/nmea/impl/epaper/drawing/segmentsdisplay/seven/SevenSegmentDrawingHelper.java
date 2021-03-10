@@ -19,6 +19,13 @@ public class SevenSegmentDrawingHelper extends SegmentDrawingHelper {
         super(screen);
     }
 
+    @Override
+    public void clearCharacter(final Pair<Integer, Integer> offsetStart, final int scale) {
+        this.screen.setColor(DisplayColor.White, DisplayColor.White);
+        this.screen.drawRectangle(offsetStart.getValue0(), offsetStart.getValue1(), offsetStart.getValue0() + SevenSergments.DIGIT_ZONE_WIDTH * scale, offsetStart.getValue1() + SevenSergments.DIGIT_ZONE_HEIGHT * scale, true);
+        this.screen.setColor(DisplayColor.Black, DisplayColor.White);
+    }
+
     private List<Integer> specialToSegments(final SpecialCharsAlphabet specialChar) {
         if (specialChar == null) {
             return new ArrayList();

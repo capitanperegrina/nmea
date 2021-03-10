@@ -90,6 +90,12 @@ public class PeregrinaNMEADisplay {
         }
     }
 
+    public void repaint() {
+        if (this.ePaperDisplay != null) {
+            this.ePaperDisplay.repaint();
+        }
+    }
+
     public void splashScreen() {
         // Show splash image
         this.clearScreen();
