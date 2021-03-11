@@ -81,9 +81,11 @@ public class PeregrinaNMEADataBuffer {
         if (this.waypoint != null && this.waypoint.isValid()) {
             dtw = boatPosition.distanceInNauticalMiles(this.waypoint);
             if (this.boatPositionList.size() > 1) {
-                vmg = Math.abs(boatPosition.distanceInNauticalMiles(this.boatPositionList.get(this.boatPositionList.size() - 2))
-                        /
-                        boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate()));
+                vmg = (Math.abs(this.boatPositionList.get(this.boatPositionList.size() - 2).distanceInNauticalMiles(this.waypoint))
+                       -
+                       Math.abs(boatPosition.distanceInNauticalMiles(this.waypoint)))
+                    /
+                    boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
             }
             LOGGER.info("Waypoint: {}    DTW = {} Nm.    VMC = {} Kn.", this.waypoint.toString(), PeregrinaNMEAUtils.speedFormat(dtw), PeregrinaNMEAUtils.speedFormat(vmg));
             PeregrinaNMEADisplay.getInstance().toWayPointScreen(boatPosition, this.waypoint, dtw, vmg);

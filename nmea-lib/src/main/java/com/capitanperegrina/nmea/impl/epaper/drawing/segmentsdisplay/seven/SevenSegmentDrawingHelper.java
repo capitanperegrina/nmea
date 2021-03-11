@@ -6,11 +6,13 @@ import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.Segm
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.naming.SpecialCharsAlphabet;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven.segments.SevenSegment;
 import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.seven.segments.SevenSergments;
+import com.capitanperegrina.nmea.impl.epaper.drawing.segmentsdisplay.sixteen.SixteenSegmentAlfabet;
 import org.javatuples.Pair;
 import tk.schmid.epaper.display.EPaperDisplay;
 import tk.schmid.epaper.display.protocol.DisplayColor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SevenSegmentDrawingHelper extends SegmentDrawingHelper {
@@ -31,16 +33,17 @@ public class SevenSegmentDrawingHelper extends SegmentDrawingHelper {
             return new ArrayList();
         }
         if (specialChar == SpecialCharsAlphabet.COMMA) {
-            return SevenSegmentsAlphabet.getSegments(',');
+            return Arrays.asList(SevenSegmentsAlphabet.getSegments(SpecialCharsAlphabet.COMMA.asChar()));
         }
-        return SevenSegmentsAlphabet.getSegments('.');
+        return Arrays.asList(SevenSegmentsAlphabet.getSegments(SpecialCharsAlphabet.DOT.asChar()));
     }
 
     @Override
     public Pair<Integer, Integer> drawCharacter(final Pair<Integer, Integer> offsetStart, final char character, final SpecialCharsAlphabet specialChar, final int scale) {
         final List<Integer> segments = new ArrayList<>();
-        segments.addAll(SevenSegmentsAlphabet.getSegments(character));
+        segments.addAll(Arrays.asList(SevenSegmentsAlphabet.getSegments(character)));
         segments.addAll(this.specialToSegments(specialChar));
+
         return this.doDrawCharacter(offsetStart, segments, scale);
     }
 

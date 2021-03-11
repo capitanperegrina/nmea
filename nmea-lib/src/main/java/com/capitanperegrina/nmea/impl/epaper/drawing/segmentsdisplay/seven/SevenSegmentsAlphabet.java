@@ -17,10 +17,10 @@ public enum SevenSegmentsAlphabet {
     SEVEN(new char[]{'7'}, 1, 2, 3, 6),
     EIGHT(new char[]{'8'}, 1, 2, 3, 4, 5, 6, 7),
     NINE(new char[]{'9'}, 1, 2, 3, 4, 6, 7),
-    DEGREE(new char[]{'*'}, 1, 2, 3, 4),
+    DEGREE(new char[]{'#'}, 1, 2, 3, 4),
     MINUTES(new char[]{'\''}, 2),
     SECONDS(new char[]{'"'}, 2, 3),
-    MINUS(new char[]{','}, 4),
+    MINUS(new char[]{'-'}, 4),
     DOT(new char[]{'.'}, 8),
     COMMA(new char[]{','}, 9);
 
@@ -47,7 +47,17 @@ public enum SevenSegmentsAlphabet {
         return this.segments;
     }
 
-    public static List<Integer> getSegments(final char character) {
-        return Arrays.asList(MAP.get(character).getSegments());
+    public static Integer[] getSegments(final char name) {
+        Integer[] ret = new Integer[]{};
+        if (MAP.get(name) != null) {
+            ret = MAP.get(name).getSegments();
+        }
+        return ret;
+//        for (final SpecialCharsAlphabet oneChar : SpecialCharsAlphabet.values()) {
+//            if (oneChar.asChar == name) {
+//                return oneChar;
+//            }
+//        }
+//        return null;
     }
 }

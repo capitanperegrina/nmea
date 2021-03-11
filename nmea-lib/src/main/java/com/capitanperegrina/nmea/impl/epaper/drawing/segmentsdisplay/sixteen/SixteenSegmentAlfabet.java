@@ -80,11 +80,5 @@ public enum SixteenSegmentAlfabet {
             ret = MAP.get(name).getSegments();
         }
         return ret;
-//        for (final SpecialCharsAlphabet oneChar : SpecialCharsAlphabet.values()) {
-//            if (oneChar.asChar == name) {
-//                return oneChar;
-//            }
-//        }
-//        return null;
     }
 }

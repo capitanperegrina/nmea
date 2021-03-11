@@ -28,8 +28,8 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
     public SegmentDrawingHelper(final EPaperDisplay screen) {
         super(screen);
         this.decimalFormatter = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.getDefault());
-        this.decimalFormatter.setMinimumFractionDigits(2);
-        this.decimalFormatter.setMaximumFractionDigits(2);
+        this.decimalFormatter.setMinimumFractionDigits(1);
+        this.decimalFormatter.setMaximumFractionDigits(1);
 
         this.doubleFormatterSymbols = this.decimalFormatter.getDecimalFormatSymbols();
 
@@ -63,20 +63,18 @@ public abstract class SegmentDrawingHelper extends DrawingHelper {
     }
 
     public Pair<Integer, Integer> drawInteger(final Pair<Integer, Integer> offsetStart, final Integer i, final int scale) {
-        final Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
         if (i != null) {
             return this.drawString(offsetStart, this.integerFormatter.format(i), scale);
         }
-        return this.drawString(offsetStart, "-" + this.doubleFormatterSymbols.getDecimalSeparator() + "--", 5);
+        return this.drawString(offsetStart, "---", scale);
     }
 
-    public Pair<Integer, Integer> drawDouble(final Pair<Integer, Integer> offsetStart, final Double d, final int scale) {
-        final Pair<Integer, Integer> ret = new Pair<>(offsetStart.getValue0(), offsetStart.getValue1());
-        if (d != null && !d.equals(Double.NaN)) {
-            return this.drawString(offsetStart, this.decimalFormatter.format(d), scale);
-        }
-        return this.drawString(offsetStart, "-" + this.doubleFormatterSymbols.getDecimalSeparator() + "--", 5);
-    }
+//    public Pair<Integer, Integer> drawDouble(final Pair<Integer, Integer> offsetStart, final Double d, final int scale) {
+//        if (d != null && !d.equals(Double.NaN)) {
+//            return this.drawString(offsetStart, this.decimalFormatter.format(d), scale);
+//        }
+//        return this.drawString(offsetStart, "-" + this.doubleFormatterSymbols.getDecimalSeparator() + "--", scale);
+//    }
 
     public abstract Pair<Integer, Integer> drawCharacter(Pair<Integer, Integer> offsetStart, char character, SpecialCharsAlphabet specialChar, int scale);
 
