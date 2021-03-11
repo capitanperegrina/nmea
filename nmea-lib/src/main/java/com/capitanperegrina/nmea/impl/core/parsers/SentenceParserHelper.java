@@ -1,10 +1,13 @@
 package com.capitanperegrina.nmea.impl.core.parsers;
 
 import com.capitanperegrina.nmea.api.model.beans.BoatPosition;
+import com.capitanperegrina.nmea.api.model.beans.nmea.VTGBean;
 import com.capitanperegrina.nmea.impl.core.PeregrinaNMEADataBuffer;
+import com.capitanperegrina.nmea.impl.utils.SentenceToBeanUtils;
 import net.sf.marineapi.nmea.parser.DataNotAvailableException;
 import net.sf.marineapi.nmea.parser.SentenceFactory;
 import net.sf.marineapi.nmea.sentence.RMCSentence;
+import net.sf.marineapi.nmea.sentence.VTGSentence;
 import net.sf.marineapi.nmea.util.Position;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -48,19 +51,19 @@ public class SentenceParserHelper {
 
     }
 
-//    private void parse(final VTGSentence vtg) {
-//        LOGGER.trace("Parsing VTG" + vtg.toString());
-//        try {
-//            final VTGBean vtgBean = SentenceToBeanUtils.toBean(vtg);
-//            PeregrinaNMEADataBuffer.getInstance().addSpeed(vtg.getSpeedKnots());
-//            this.dataAvailable(VTG);
-//        } catch (final DataNotAvailableException e) {
-//            if (this.shouldShowErrorMessage(VTG)) {
-//                LOGGER.error("{} Data not available", VTG);
-//            }
-//            this.dataUnvailable(VTG);
-//        }
-//    }
+    private void parse(final VTGSentence vtg) {
+        LOGGER.trace("Parsing VTG" + vtg.toString());
+        try {
+            final VTGBean vtgBean = SentenceToBeanUtils.toBean(vtg);
+            PeregrinaNMEADataBuffer.getInstance().addSpeed(vtg.getSpeedKnots());
+            this.dataAvailable(VTG);
+        } catch (final DataNotAvailableException e) {
+            if (this.shouldShowErrorMessage(VTG)) {
+                LOGGER.error("{} Data not available", VTG);
+            }
+            this.dataUnvailable(VTG);
+        }
+    }
 
     private void parse(final RMCSentence rmc) {
         try {

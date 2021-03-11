@@ -26,27 +26,31 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(PeregrinaNMEADaemon.class);
 
+    private static final int ESCAPE_TIMES_TO_STOP = 3;
+
     @Autowired
     private SerialPortReader spr;
 
     @Autowired
     private ITrackService trackService;
 
-    public void run(PeregrinaNMEAExcutionParameters params) {
+    private int escapeTimes = 0;
+
+    public void run(final PeregrinaNMEAExcutionParameters params) {
         if (PeregrinaNMEAOperations.EXPORT.toString().equals(params.getOperation())) {
             this.trackService.generateGpxFile();
         } else if (PeregrinaNMEAOperations.RESET.toString().equals(params.getOperation())) {
             this.trackService.cleanData();
         } else {
-            doGpsOperations(params);
+            this.doGpsOperations(params);
         }
     }
 
-    private void doGpsOperations(PeregrinaNMEAExcutionParameters params) {
+    private void doGpsOperations(final PeregrinaNMEAExcutionParameters params) {
         try {
-            if ( params.isEnableKeyboard() ) {
+            if (params.isEnableKeyboard()) {
                 // If keyboard is enabled initize listeners.
-                configureKeyboard();
+                this.configureKeyboard();
             }
 
             // Configuring ePaperScreen
@@ -55,18 +59,18 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             // Configuring data buffer
             PeregrinaNMEADataBuffer.getInstance().setTrackService(this.trackService);
             this.spr.configure(params);
-            spr.start();
-            if ( params.getSeconds() != -1 ) {
+            this.spr.start();
+            if (params.getSeconds() != -1) {
                 LOGGER.info("Started for {} seconds.", params.getSeconds());
-                Thread.sleep(params.getSeconds()*1000);
+                Thread.sleep(params.getSeconds() * 1000);
             } else {
                 LOGGER.info("Started forever.");
                 while (true) {
                     Thread.sleep(Long.MAX_VALUE);
                 }
             }
-        } catch ( InterruptedException e ) {
-            LOGGER.error(e.getMessage(),e);
+        } catch (final InterruptedException e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -75,25 +79,36 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
             LOGGER.debug("If application stops here and you're running on linux, maybe you should ensure exists org/jnativehook/lib/linux/arm/libJNativeHook.so in jnativehook-2.1.0.jar.");
             GlobalScreen.registerNativeHook();
             GlobalScreen.addNativeKeyListener(this);
-        } catch (NativeHookException e) {
+        } catch (final NativeHookException e) {
             LOGGER.error("There was a problem registering the native hook.", e);
             throw new RuntimeException(e);
         }
     }
 
     // Buggy keyboard listener methods.
-    public void nativeKeyReleased(NativeKeyEvent e) {
+    @Override
+    public void nativeKeyReleased(final NativeKeyEvent e) {
         if (LOGGER.isTraceEnabled()) {
             LOGGER.trace(String.format("    0x%08X     %5d    %s\n", e.getKeyCode(), e.getKeyCode(), NativeKeyEvent.getKeyText(e.getKeyCode())));
         }
-        if ( e.getKeyCode() == KeyboardNaming.PLUS ) {
+
+        if (e.getKeyCode() == KeyboardNaming.ESCAPE) {
+            this.escapeTimes++;
+            if (this.escapeTimes == ESCAPE_TIMES_TO_STOP) {
+                Runtime.getRuntime().halt(0);
+            }
+        } else {
+            this.escapeTimes = 0;
+        }
+
+        if (e.getKeyCode() == KeyboardNaming.PLUS) {
             if (PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() < WaypointsNaming.getInternalWaypoints().size() - 1) {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() + 1);
             } else {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(0);
             }
-        } else if ( e.getKeyCode() == KeyboardNaming.MINUS ) {
-            if ( PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() > 0 ) {
+        } else if (e.getKeyCode() == KeyboardNaming.MINUS) {
+            if (PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() > 0) {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(PeregrinaNMEADataBuffer.getInstance().getCurrentWaypoint() - 1);
             } else {
                 PeregrinaNMEADataBuffer.getInstance().setCurrentWaypoint(WaypointsNaming.getInternalWaypoints().size() - 1);
@@ -101,11 +116,13 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
         }
     }
 
-    public void nativeKeyPressed(NativeKeyEvent e) {
+    @Override
+    public void nativeKeyPressed(final NativeKeyEvent e) {
         // Nothing to do.
     }
 
-    public void nativeKeyTyped(NativeKeyEvent e) {
+    @Override
+    public void nativeKeyTyped(final NativeKeyEvent e) {
         // Nothing to do.
     }
 
@@ -115,7 +132,7 @@ public class PeregrinaNMEADaemon implements NativeKeyListener {
         LogManager.getLogManager().reset();
 
         // Get the logger for "org.jnativehook" and set the level to off.
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        final Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
     }
 }

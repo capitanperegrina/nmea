@@ -73,22 +73,18 @@ public class PeregrinaNMEADataBuffer {
         }
 
         // Quick and dirty stuff
-        Double vmg = Double.NaN;
-        Double dtw = Double.NaN;
-
-        LOGGER.debug(PeregrinaNMEAUtils.boatInformarionToFormattedString(boatPosition));
-
+        Double vmc = Double.NaN;
         if (this.waypoint != null && this.waypoint.isValid()) {
-            dtw = boatPosition.distanceInNauticalMiles(this.waypoint);
+            final Double dtw = boatPosition.distanceInNauticalMiles(this.waypoint);
             if (this.boatPositionList.size() > 1) {
-                vmg = (Math.abs(this.boatPositionList.get(this.boatPositionList.size() - 2).distanceInNauticalMiles(this.waypoint))
-                       -
-                       Math.abs(boatPosition.distanceInNauticalMiles(this.waypoint)))
-                    /
-                    boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
+                vmc = (Math.abs(this.boatPositionList.get(this.boatPositionList.size() - 2).distanceInNauticalMiles(this.waypoint))
+                        -
+                        Math.abs(boatPosition.distanceInNauticalMiles(this.waypoint)))
+                        /
+                        boatPosition.diferenceInHours(this.boatPositionList.get(this.boatPositionList.size() - 2).getDate());
             }
-            LOGGER.info("Waypoint: {}    DTW = {} Nm.    VMC = {} Kn.", this.waypoint.toString(), PeregrinaNMEAUtils.speedFormat(dtw), PeregrinaNMEAUtils.speedFormat(vmg));
-            PeregrinaNMEADisplay.getInstance().toWayPointScreen(boatPosition, this.waypoint, dtw, vmg);
+            LOGGER.info("Waypoint: {}    DTW = {} Nm.    VMC = {} Kn.", this.waypoint.toString(), PeregrinaNMEAUtils.formatSpeed(dtw), PeregrinaNMEAUtils.formatSpeed(vmc));
+            PeregrinaNMEADisplay.getInstance().toWayPointScreen(boatPosition, this.waypoint, dtw, vmc);
         } else {
             PeregrinaNMEADisplay.getInstance().noWayPointScreen(boatPosition);
         }
@@ -96,24 +92,25 @@ public class PeregrinaNMEADataBuffer {
         this.trackService.savePoint(boatPosition);
     }
 
-//    public void addSpeed(final Double speed) {
-//        // Making space if full
-//        this.boatSpeedList.add(speed);
-//        if (this.boatSpeedList.size() > DATA_BUFFER_SIZE) {
-//            this.boatSpeedList.removeFirst();
-//        }
-//
-//        final Double sog = this.boatSpeedList.stream().filter(value -> value != null || value != Double.NaN).mapToDouble(a -> a).average().orElse(0d);
-//
-//        // Quick and dirty stuff
-//        LOGGER.debug(this.toSpeedsString());
-//    }
+    public void addSpeed(final Double speed) {
+        // Making space if full
+        this.boatSpeedList.add(speed);
+        if (this.boatSpeedList.size() > DATA_BUFFER_SIZE) {
+            this.boatSpeedList.removeFirst();
+        }
+
+        final Double smoothSpedd = this.boatSpeedList.stream().filter(value -> value != null || value != Double.NaN).mapToDouble(a -> a).average().orElse(0d);
+        PeregrinaNMEADisplay.getInstance().updateSpeeds(speed, smoothSpedd);
+
+        // Quick and dirty stuff
+        LOGGER.debug(this.toSpeedsString());
+    }
 
     public String toPostionString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Cached positions: (").append(this.boatPositionList.size()).append(")\n");
         this.boatPositionList.stream().forEach(position -> {
-            sb.append(PeregrinaNMEAUtils.boatInformarionToFormattedString(position)).append("\n");
+            sb.append(position.toString()).append("\n");
         });
         return sb.toString();
     }
@@ -122,10 +119,10 @@ public class PeregrinaNMEADataBuffer {
         final StringBuilder sb = new StringBuilder();
         sb.append("Cached speeds: (").append(this.boatSpeedList.size()).append(") : ");
         this.boatSpeedList.stream().forEach(speed -> {
-            sb.append(PeregrinaNMEAUtils.speedFormat(speed)).append(", ");
+            sb.append(PeregrinaNMEAUtils.formatSpeed(speed)).append(", ");
         });
         sb.append(" Smooth Spedd: ");
-        sb.append(PeregrinaNMEAUtils.speedFormat(this.boatSpeedList.stream().filter(d -> d != null && !d.equals(Double.NaN)).
+        sb.append(PeregrinaNMEAUtils.formatSpeed(this.boatSpeedList.stream().filter(d -> d != null && !d.equals(Double.NaN)).
                 mapToDouble(d -> d).average().orElse(Double.NaN)));
         sb.append("");
         return sb.toString();

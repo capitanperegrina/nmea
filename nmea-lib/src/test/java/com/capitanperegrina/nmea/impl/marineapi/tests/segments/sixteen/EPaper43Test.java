@@ -28,7 +28,16 @@ public class EPaper43Test {
             PeregrinaNMEADisplay.getInstance().clearScreen();
             PeregrinaNMEADisplay.getInstance().noWayPointScreen(bp);
             PeregrinaNMEADisplay.getInstance().toWayPointScreen(bp, WaypointsNaming.getInternalWaypoints().get(4), 2.3d, 4.08d);
-            PeregrinaNMEADisplay.getInstance().toWayPointScreen(bp, WaypointsNaming.getInternalWaypoints().get(2), 2.3d, 4.08d);
+            PeregrinaNMEADisplay.getInstance().updateSpeeds(3.2, 4.1);
+            PeregrinaNMEADisplay.getInstance().fireRepaint();
+            PeregrinaNMEADisplay.getInstance().updateSpeeds(3.4, 3.9);
+            PeregrinaNMEADisplay.getInstance().toWayPointScreen(bp, WaypointsNaming.getInternalWaypoints().get(4), 2.2d, 4.18d);
+            try {
+                Thread.sleep(2000);
+            } catch (final InterruptedException e) {
+                LOGGER.info(e.getMessage());
+            }
+            PeregrinaNMEADisplay.getInstance().fireRepaint();
 
             // PeregrinaNMEADisplay.getInstance().clearScreen();
             // PeregrinaNMEADisplay.getInstance().draw16segments(new Pair<>(50, 200), 3, Double.valueOf(0.12d));
