@@ -1,42 +1,38 @@
 package com.capitanperegrina.nmea.impl.marineapi.tests.segments.sixteen;
 
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComponent;
 
 public class Seg16MultiCharacterDisplay extends JComponent {
 
     private static final int GAP = 5;
+    private static final long serialVersionUID = -2420046483208485873L;
 
-    private int segmentDisplayCount;
-    private List<Seg16SegmentDisplay> segmentDisplays;
+    private final List<Seg16SegmentDisplay> segmentDisplays = new ArrayList<>();
     private int scale;
 
-    public Seg16MultiCharacterDisplay(int segmentDisplayCount, int scale) {
-        this.segmentDisplayCount = segmentDisplayCount;
-        segmentDisplays = new ArrayList<Seg16SegmentDisplay>(segmentDisplayCount);
-        setLayout(new FlowLayout(FlowLayout.LEFT, GAP*scale, 0));
-        for (int i = 0; i < segmentDisplayCount; i++) {
-            Seg16SegmentDisplay display = new Seg16SegmentDisplay(scale);
-            segmentDisplays.add(display);
-            add(display);
+    public Seg16MultiCharacterDisplay(final String text, final int scale) {
+        this.setLayout(new FlowLayout(FlowLayout.LEFT, GAP * scale, 0));
+        for (int i = 0; i < text.length(); i++) {
+            final Seg16SegmentDisplay display = new Seg16SegmentDisplay(scale);
+            display.setBackground(Color.WHITE);
+            this.segmentDisplays.add(display);
+            this.add(display);
         }
+        this.setText(text);
     }
 
     @Override
     public void repaint() {
-        this.segmentDisplays.stream().forEach( d -> d.repaint() );
+        this.segmentDisplays.stream().forEach(d -> d.repaint());
     }
 
-    public void setText(String text) {
-        if (text.length() > segmentDisplayCount) {
-            text = text.substring(0, segmentDisplayCount);
-        }
+    private void setText(final String text) {
         int i = 0;
-        for (char c : text.toCharArray()) {
-            segmentDisplays.get(i++).setCharacter(c);
+        for (final char c : text.toCharArray()) {
+            this.segmentDisplays.get(i++).setCharacter(c);
         }
     }
 }

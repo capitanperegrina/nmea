@@ -1,68 +1,36 @@
 package com.capitanperegrina.nmea.impl.marineapi.tests.segments.sixteen;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 public class Seg16Test {
 
-    public static void main(String[] args) {
-        String text = "275";
-        Seg16MultiCharacterDisplay display = (new Seg16MultiCharacterDisplay(text.length(), 3));
-        display.setText(text);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Seg16Test.class);
 
-        JFrame frame = new JFrame();
-        frame.setBackground(Color.WHITE);
-        frame.getContentPane().setBackground(Color.white);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(800, 600));
-        frame.setUndecorated(true);
-        frame.getContentPane().add(display);
-        frame.pack();
-        frame.setVisible(true);
-        BufferedImage img = getScreenShot(frame);
+    private final static String TEXT_1 = "275";
+    private final static String TEXT_2 = "290";
 
-        try{
-            ImageIO.write(
-                img,
-                "bmp",
-                new File("screenshot.bmp"));
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
-
-        display.setText("290");
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(display);
-        frame.pack();
-        frame.setVisible(true);
-        img = getScreenShot(frame);
-        frame.dispose();
-
-        try{
-            ImageIO.write(
-                img,
-                "bmp",
-                new File("screenshot2.bmp"));
-        } catch ( Exception e ) {
+    public static void save(final BufferedImage img, final String type, final String filename) {
+        try {
+            ImageIO.write(img, type, new File(filename));
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static BufferedImage getScreenShot(Component component) {
-        BufferedImage image = new BufferedImage(
-                component.getWidth(),
-                component.getHeight(),
-                BufferedImage.TYPE_INT_RGB);
-        // call the Component's paint method, using the Graphics object of the image.
-        component.paint(image.getGraphics());
-        return image;
+    public static BufferedImage generateImage(final String text, final int scale) {
+        final Seg16MultiCharacterDisplay display = new Seg16MultiCharacterDisplay(text, scale);
+        final BufferedImage img = ScreenImage.createImage(display);
+        LOGGER.info("Image generated for text \"{}\", (Size: {},{})", text, img.getWidth(), img.getHeight());
+        return img;
     }
 
+    public static void main(final String[] args) {
+        save(generateImage(TEXT_1, 3), "bmp", "screenshot1.bmp");
+        save(generateImage(TEXT_2, 3), "bmp", "screenshot2.bmp");
+    }
 }
