@@ -27,12 +27,14 @@ package com.capitanperegrina.nmea.bin;
  * #L%
  */
 
+import com.capitanperegrina.nmea.impl.epaper.PeregrinaNMEADisplay;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
 import com.pi4j.util.Console;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * This example code demonstrates how to perform basic SPI communications using the Raspberry Pi.
@@ -41,6 +43,9 @@ import java.io.IOException;
  * @author Robert Savage
  */
 public class SpiExample {
+
+    public static final int EPD_WITH = 1440;
+    public static final int EPD_HEIGHT = 900;
 
     // SPI device
     public static SpiDevice spi = null;
@@ -87,6 +92,9 @@ public class SpiExample {
         // continue running program until user exits using CTRL-C
         while (console.isRunning()) {
             read();
+            clearEPD((byte) 0x00);
+            clearEPD((byte) 0xff);
+            read();
             Thread.sleep(1000);
         }
         console.emptyLine();
@@ -105,6 +113,7 @@ public class SpiExample {
         console.print(" |\r");
         Thread.sleep(250);
     }
+
 
 
     /**
@@ -127,6 +136,19 @@ public class SpiExample {
         final byte[] result = spi.write(data);
 
         // calculate and return conversion value from result bytes
+        int value = (result[1] << 8) & 0b1100000000; //merge data[1] & data[2] to get 10-bit result
+        value |= (result[2] & 0xff);
+        return value;
+    }
+
+    public static byte[] createByteArray(byte value, int length) {
+        byte[] ret = new byte[length];
+        Arrays.fill(ret, value);
+        return ret;
+    }
+
+    public static int clearEPD(byte backgroundColor) {
+        final byte[] result = spi.write(createByteArray(backgroundColor, EPD_HEIGHT*EPD_WITH));
         int value = (result[1] << 8) & 0b1100000000; //merge data[1] & data[2] to get 10-bit result
         value |= (result[2] & 0xff);
         return value;
